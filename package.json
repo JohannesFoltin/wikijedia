@@ -1,0 +1,25 @@
+{
+	"name": "wikijedia",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"svelte": "^4.2.7",
+		"vite": "^5.0.3"
+	},
+	"type": "module",
+	"dependencies": {
+		"@lexical/list": "^0.12.6",
+		"@lexical/plain-text": "^0.12.6",
+		"@lexical/rich-text": "^0.12.6",
+		"lexical": "^0.12.6",
+		"svelte-lexical": "^0.3.4"
+	}
+}
