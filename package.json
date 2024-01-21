@@ -19,7 +19,6 @@
 		"@lexical/list": "^0.12.6",
 		"@lexical/plain-text": "^0.12.6",
 		"@lexical/rich-text": "^0.12.6",
-		"lexical": "^0.12.6",
-		"svelte-lexical": "^0.3.4"
+		"lexical": "^0.12.6"
 	}
 }
