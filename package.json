@@ -16,8 +16,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@editorjs/editorjs": "^2.28.2",
-		"@editorjs/header": "^2.8.1",
-		"svelte-editorjs": "^0.1.0"
+		"markdown-it": "^14.0.0"
 	}
 }

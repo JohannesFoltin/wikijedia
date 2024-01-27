@@ -1,31 +1,32 @@
-<script>
-    import { onMount } from "svelte";
+<script lang="js">
+    import { onMount } from 'svelte';
+    import markdownit from 'markdown-it';
 
-    import { createEditor } from "svelte-editorjs";
-    import Header from '@editorjs/header';
+    let markdownText = '## markdown preview';
+    let html = '';
 
-    const { editor, data, isReady } = createEditor({
-        tools: {
-            header: Header,
-        },
+    onMount(() => {
+        updatePreview();
     });
 
-    $: {
-        if (isReady) {
-            console.log("Saved data:", $data);
-        }
+    function updatePreview() {
+       // const markdownIt = mdurl.require('markdown-it')();
+        const md = markdownit({
+            breaks: true,
+        });
+        html = md.render(markdownText);
     }
-    onMount(() => {});
+
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>
-    Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-</p>
-<div class="editor" use:editor />
-
 <style>
-    .editor {
-        border: 2px solid #ccc;
+    textarea {
+        width: 100%;
+        height: 200px;
     }
 </style>
+
+<textarea bind:value={markdownText} on:input={updatePreview}></textarea>
+<div>
+    {@html html}
+</div>
