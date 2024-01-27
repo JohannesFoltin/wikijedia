@@ -1,49 +1,27 @@
 <script lang="js">
-    import { onMount } from 'svelte';
-    import markdownit from 'markdown-it';
-    import "../app.css";
+    import MarkdownEditor from "../lib/MarkdownEditor.svelte";
+    import FolderSidebar from "../lib/FolderSidebar.svelte";
+    import { PanelLeftClose, PanelLeftOpen, } from 'lucide-svelte';
 
-    let markdownText = '# Markdown preview';
-    let html = '';
-    let isEditing = false;
+    let sidebarVisible = true;
 
-    onMount(() => {
-        updatePreview();
-    });
-
-    function updatePreview() {
-        const md = markdownit({
-            breaks: true,
-        });
-        html = md.render(markdownText);
+    function toggleSidebar() {
+        sidebarVisible = !sidebarVisible;
     }
-
-    function toggleEditing() {
-        isEditing = !isEditing;
-    }
-
 </script>
 
-<div class="flex h-screen">
-    {#if isEditing}
-        <div class="flex-1 p-10">
-            <textarea class="w-full h-full resize-none border-black border-2 rounded" bind:value={markdownText} on:input={updatePreview}></textarea>
+<div class="flex h-screen w-screen">
+    {#if sidebarVisible}
+        <div class="pr-10">
+            <button class="" on:click={toggleSidebar}>    
+                <PanelLeftClose/>
+            </button>
+            <FolderSidebar class="flex-1" />
         </div>
-        <div class="flex-1 p-10 overflow-y-auto">
-            {@html html}
-        </div>
-    {:else}
-        <div class="flex-1 p-10">
-                <div class="flex-1 overflow-y-auto">
-                    {@html html}
-                </div>
-        </div>
-    {/if}
-    <button class="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={toggleEditing}>
-        {#if isEditing}
-            Preview
         {:else}
-            Edit
+        <button class="" on:click={toggleSidebar}>    
+            <PanelLeftOpen/>
+        </button>    
         {/if}
-    </button>
+    <MarkdownEditor class="flex-1" markdownText=" # Asd" />
 </div>
