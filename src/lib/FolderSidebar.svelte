@@ -5,7 +5,7 @@
     export let json = {};
     export let indent = 0;
 
-    let open = true;
+    let open = false;
 
     function toggleOpen() {
         open = !open;
@@ -40,8 +40,8 @@
             </div>
         {/each}
     {/if}
-    {#if json.JSONObjChildren.length > 0}
-        {#each json.JSONObjChildren as file}
+    {#if json.Objects.length > 0}
+        {#each json.Objects as file}
             <div>
                 <FileSidebar data={file} indent={newIdent} />
             </div>
