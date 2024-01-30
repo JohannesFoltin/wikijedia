@@ -1,8 +1,8 @@
 <script lang="js">
     import MarkdownEditor from "../lib/MarkdownEditor.svelte";
-    import FolderSidebar from "../lib/FolderSidebar.svelte";
-    import { PanelLeftClose, PanelLeftOpen, } from 'lucide-svelte';
-
+    import RootFolderSidebar from "../lib/RootFolderSidebar.svelte";
+    import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
+    
     let sidebarVisible = true;
 
     function toggleSidebar() {
@@ -11,17 +11,19 @@
 </script>
 
 <div class="flex h-screen w-screen">
-    {#if sidebarVisible}
-        <div class="pr-10">
-            <button class="" on:click={toggleSidebar}>    
-                <PanelLeftClose/>
-            </button>
-            <FolderSidebar class="flex-1" />
+    <div class="pr-4">
+        <button class="" on:click={toggleSidebar}>
+            {#if sidebarVisible}
+                    <PanelLeftClose />
+                {:else}
+                <PanelLeftOpen />
+            {/if}
+        </button>
+        {#if sidebarVisible}
+        <div class="flex-none pr-10 w-56">
+            <RootFolderSidebar/>
         </div>
-        {:else}
-        <button class="" on:click={toggleSidebar}>    
-            <PanelLeftOpen/>
-        </button>    
         {/if}
+    </div>
     <MarkdownEditor class="flex-1" markdownText=" # Asd" />
 </div>

@@ -1,25 +1,42 @@
 <script>
-    let folders = [
-        {
-            name: "Folder 1",
-            files: ["File 1", "File 2", "File 3"]
-        },
-        {
-            name: "Folder 2",
-            files: ["File 4", "File 5"]
-        },
-        {
-            name: "Folder 3",
-            files: ["File 6"]
-        }
-    ];
+    import FileSidebar from "./FileSidebar.svelte";
+    import { ChevronDown, ChevronRight, ChevronUp } from "lucide-svelte";
+
+    export let json = {};
+    export let indent = 0;
+
+    let open = true;
+
+    function toggleOpen() {
+        open = !open;
+    }
+    let newIdent = indent + 24;
 </script>
 
-<div class="w-fit">
-    {#each folders as folder}
-        <div class="ml-5" style="white-space: nowrap;">{folder.name}</div>
-        {#each folder.files as file}
-            <div class="ml-14" style="white-space: nowrap;">{file}</div>
+<button style="padding-left: {indent}px" class="flex items-center" on:click={toggleOpen}>
+    {#if !open}
+        <div class="flex items-center">
+            <ChevronRight class="size-4 mx-auto" />
+        </div>
+    {:else}
+        <div class="flex items-center">
+            <ChevronDown class="size-4 mx-auto" />
+        </div>
+    {/if}
+    <div class="">
+        {json.Name}
+    </div>
+</button>
+
+{#if open}
+    {#if json.Children.length > 0}
+        {#each json.Children as child}
+            <svelte:self json={child} indent={newIdent} />
         {/each}
-    {/each}
-</div>
+    {/if}
+    {#if json.JSONObjChildren.length > 0}
+        {#each json.JSONObjChildren as file}
+            <FileSidebar data={file} indent={newIdent} />
+        {/each}
+    {/if}
+{/if}
