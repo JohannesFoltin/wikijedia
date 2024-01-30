@@ -13,7 +13,11 @@
     let newIdent = indent + 24;
 </script>
 
-<button style="padding-left: {indent}px" class="flex items-center" on:click={toggleOpen}>
+<button
+    style="padding-left: {indent}px"
+    class="flex items-center"
+    on:click={toggleOpen}
+>
     {#if !open}
         <div class="flex items-center">
             <ChevronRight class="size-4 mx-auto" />
@@ -31,12 +35,16 @@
 {#if open}
     {#if json.Children.length > 0}
         {#each json.Children as child}
-            <svelte:self json={child} indent={newIdent} />
+            <div>
+                <svelte:self json={child} indent={newIdent} />
+            </div>
         {/each}
     {/if}
     {#if json.JSONObjChildren.length > 0}
         {#each json.JSONObjChildren as file}
-            <FileSidebar data={file} indent={newIdent} />
+            <div>
+                <FileSidebar data={file} indent={newIdent} />
+            </div>
         {/each}
     {/if}
 {/if}
