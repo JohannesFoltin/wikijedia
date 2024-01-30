@@ -1,9 +1,32 @@
 <script lang="js">
+    import { objectID } from './store';
     import { onMount } from 'svelte';
     import markdownit from 'markdown-it';
     import "../app.css";
 
     export let markdownText = '# Markdown preview';
+
+    objectID.subscribe((value) => {
+        console.log(value);
+        if(value !== ''){
+            console.log(value);
+            const url = "http://test.johafo.de:8080/object/" + value;
+            console.log(url);
+            async function fetchData() {
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    console.log(data);
+                    markdownText = data.Data;
+                    updatePreview();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            fetchData();
+        }
+    });
 
     let html = '';
     let isEditing = false;

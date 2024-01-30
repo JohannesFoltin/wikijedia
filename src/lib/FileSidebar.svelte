@@ -1,9 +1,12 @@
 <script>
+    import{ objectID } from './store';
+
     export let data = {};
     export let indent = 0;
 
     function setInhalt() {
-        console.log(data);
+        console.log(data.ID);
+        objectID.set(data.ID);
     }
 </script>
 

@@ -1,12 +1,13 @@
 // @ts-nocheck
 import { writable } from "svelte/store";
 
-function currentText() {
-    const { subscribe, set } = writable({});
+function currentObjectID() {
+    const { subscribe, set } = writable("");
     return {
         subscribe,
         set: (value) => set(value),
-        reset: () => set({})
+        reset: () => set("")
     };
 }
-export const textObjekt = currentText();
+
+export const objectID = currentObjectID();
