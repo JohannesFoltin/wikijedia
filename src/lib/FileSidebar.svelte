@@ -5,7 +5,6 @@
     export let indent = 0;
 
     function setInhalt() {
-        console.log(data.ID);
         objectID.set(data.ID);
     }
 </script>

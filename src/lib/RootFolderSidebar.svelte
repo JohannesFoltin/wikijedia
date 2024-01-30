@@ -3,13 +3,13 @@
     import FileSidebar from "./FileSidebar.svelte";
     import FolderSidebar from "./FolderSidebar.svelte";
 
-    let folders = [];
+    let rootFolder = null;
 
     onMount(async () => {
         const response = await fetch("http://test.johafo.de:8080/structure");
         var tmp = await response.json();
-        folders = formatFolders(tmp);
-        console.log(folders);
+        rootFolder = formatFolders(tmp);
+        console.log(rootFolder);
     });
 
     function formatFolders(folders) {
@@ -26,22 +26,20 @@
                 folderMap[folder.ParentID].Children.push(folderMap[folder.ID]);
             }
         }
+        const rootFolder = folderMap[1];
 
-        // Return the root folder(s)
-        return folders
-            .filter((folder) => !folder.ParentID)
-            .map((folder) => folderMap[folder.ID]);
+        return rootFolder;
     }
 </script>
 
 <div class="w-max h-max">
-    {#if folders.length > 0}
-        {#each folders[0].Children as folder}
+    {#if rootFolder !== null}
+        {#each rootFolder.Children as folder}
             <div>
                 <FolderSidebar json={folder} indent={4} />
             </div>
         {/each}
-        {#each folders[0].Objects as file}
+        {#each rootFolder.Objects as file}
             <div>
                 <FileSidebar data={file} indent={4} />
             </div>

@@ -77,5 +77,5 @@
             </div>
         {/if}
     </div>
-    <MarkdownEditor class="flex-1" markdownText=" # Asd" />
+    <MarkdownEditor class="flex-1"/>
 </div>
