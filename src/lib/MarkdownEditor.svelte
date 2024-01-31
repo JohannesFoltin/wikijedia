@@ -100,9 +100,9 @@
         {/if}
     </button>
     <button
-        class="fixed bottom-4 right-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        class="fixed bottom-4 right-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         on:click={save}
-    >
+        >
         Save
     </button>
 </div>
