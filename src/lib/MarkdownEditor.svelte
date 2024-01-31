@@ -49,7 +49,7 @@
 
         try {
             const response = await fetch(url, {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Access-Control-Allow-Origin": "http://test.johafo.de/", // Specify the url you wish to permit
                     "Access-Control-Allow-Methods": "POST, OPTIONS",
