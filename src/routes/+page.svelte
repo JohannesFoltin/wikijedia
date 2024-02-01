@@ -57,7 +57,7 @@
 <div class="flex h-screen w-screen">
     <div class="pr-4">
         {#if sidebarVisible}
-            <div class="flex items-center">
+            <div class="flex items-center justify-around">
                 <button class="" on:click={toggleSidebar}>
                     <PanelLeftClose />
                 </button>

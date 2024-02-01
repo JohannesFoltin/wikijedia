@@ -19,7 +19,14 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@codemirror/lang-markdown": "^6.2.4",
+		"@codemirror/language-data": "^6.4.0",
+		"@codemirror/state": "^6.4.0",
+		"codemirror": "^6.0.1",
 		"lucide-svelte": "^0.316.0",
-		"markdown-it": "^14.0.0"
+		"markdown-it": "^14.0.0",
+		"markdown-it-code-copy": "^0.1.2",
+		"markdown-it-wikilinks": "^1.4.0",
+		"svelte-codemirror-editor": "^1.2.0"
 	}
 }
