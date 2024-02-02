@@ -1,12 +1,14 @@
 <script lang="js">
-    import { objectID,serverURL } from "./store";
+    import { objectID, serverURL } from "./store";
     import { onMount } from "svelte";
     import markdownit from "markdown-it";
+    import { createEventDispatcher } from "svelte";
     import "../app.css";
     import { basicSetup, EditorView } from "codemirror";
     import { markdown } from "@codemirror/lang-markdown";
     import { languages } from "@codemirror/language-data";
 
+    const dispatch = createEventDispatcher();
 
     /**
      *
@@ -34,7 +36,7 @@
         breaks: true,
     });
 
-    $:console.log(object);
+    $: console.log(object);
 
     //$:object.Data !== undefined && updatePreview();
 
@@ -70,13 +72,12 @@
         isEditing = !isEditing;
     }
 
-/*     objectID.subscribe(async (value) => {
+    /*     objectID.subscribe(async (value) => {
         if (value !== "" && value !== object.ID) {
             await getObject(value);
             updatePreview();
         }
     }); */
-
 
     async function getObject(value) {
         try {
@@ -92,29 +93,43 @@
 
     const sendObjectToServer = async () => {
         try {
-            const response = await fetch(
-                $serverURL + "object/" + object.ID,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(object),
+            const response = await fetch($serverURL + "object/" + object.ID, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
                 },
-            );
+                body: JSON.stringify(object),
+            });
             console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };  
+
+    const updateName = async () =>{
+        let tmp = {Name: object.Name};
+        console.log(tmp);
+        try {
+            const response = await fetch($serverURL + "object/" + object.ID + "/name", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(tmp),
+            });
+            console.log(response);
+            dispatch("updateName");
             nameFieldIsLoading = false;
         } catch (error) {
             console.error(error);
         }
-    };
+    }
 
     function onFileNameInput() {
         nameFieldIsLoading = true;
         clearTimeout(safeTimeoutForName);
-        safeTimeoutForName = setTimeout(sendObjectToServer, 500);
+        safeTimeoutForName = setTimeout(updateName, 500);
     }
-    
 </script>
 
 {#if object == undefined}
