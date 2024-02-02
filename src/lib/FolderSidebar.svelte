@@ -15,7 +15,7 @@
 
 <button
     style="padding-left: {indent}px"
-    class="flex items-center"
+    class="flex items-center hover:bg-gray-200 hover:rounded-lg w-full h-full"
     on:click={toggleOpen}
 >
     {#if !open}
