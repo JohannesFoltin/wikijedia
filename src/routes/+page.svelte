@@ -1,4 +1,5 @@
 <script lang="js">
+    import { objectID } from "$lib/store.js";
     import MarkdownEditor from "../lib/MarkdownEditor.svelte";
     import RootFolderSidebar from "../lib/RootFolderSidebar.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
@@ -11,7 +12,7 @@
     async function addFile() {
         console.log("addFile");
         const url = "http://test.johafo.de:8080/jsonobj";
-        const data = { Name:"Hallo Welt",Data:"# Hello World", FolderID:3 };
+        const data = { Name: "Hallo Welt", Data: "# Hello World", FolderID: 3 };
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -33,7 +34,7 @@
     async function addFolder() {
         console.log("addFile");
         const url = "http://test.johafo.de:8080/folder";
-        const data = { Name:"Hallo Welt",ParentID:2};
+        const data = { Name: "Hallo Welt", ParentID: 2 };
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -77,5 +78,13 @@
             </div>
         {/if}
     </div>
-    <MarkdownEditor class="flex-1"/>
+    {#if $objectID !== ""}
+        <MarkdownEditor class="flex-1" />
+    {:else}
+        <div class="h-full w-full flex items-center justify-center">
+            <h1>
+                Hallo in deinem Persönlichen Wiki. Wähle doch mal eine Datei aus
+            </h1>
+        </div>
+    {/if}
 </div>

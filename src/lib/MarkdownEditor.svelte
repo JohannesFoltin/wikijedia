@@ -17,7 +17,7 @@
      * @param {number} object.FolderID ID des Ordners, in dem das Objekt liegt
      *
      */
-    let object = getObject({ $objectID });
+    let object;
 
     let html = "";
 
@@ -34,6 +34,10 @@
 
    $: object.Data !== undefined && updatePreview();
 
+    onMount(()=>{
+        object = getObject($objectID);
+    });
+    
     function updatePreview() {
         html = md.render(object.Data);
     }
