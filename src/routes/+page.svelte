@@ -1,22 +1,48 @@
 <script lang="js">
     import { objectID, serverURL } from "$lib/store.js";
+    import FolderSidebar from "../lib/FolderSidebar.svelte";
+    import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
     import MarkdownEditor from "../lib/MarkdownEditor.svelte";
-    import RootFolderSidebar from "../lib/RootFolderSidebar.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
 
     let sidebarVisible = true;
+    let rootFolder = null;
 
-    onMount(()=>{
-        serverURL.set("http://localhost:8080/")
+    onMount(async () => {
+        serverURL.set("http://localhost:8080/");
+        rootFolder = await getFolderstruture();
     });
 
     function toggleSidebar() {
         sidebarVisible = !sidebarVisible;
     }
+
+    async function getFolderstruture() {
+        const response = await fetch($serverURL + "structure");
+        var tmp = await response.json();
+
+        const folderMap = {};
+
+        // First pass: create a map of all folders by ID
+        for (const folder of tmp) {
+            folderMap[folder.ID] = { ...folder, Children: [] };
+        }
+
+        // Second pass: add each folder to its parent's Children array
+        for (const folder of tmp) {
+            if (folder.ParentID in folderMap) {
+                folderMap[folder.ParentID].Children.push(folderMap[folder.ID]);
+            }
+        }
+        const rootFolder = folderMap[1];
+
+        return rootFolder;
+    }
+
     async function addFile() {
         console.log("addFile");
-        const url = $serverURL + "jsonobj";
+        const url = $serverURL + "object";
         const data = { Name: "Hallo Welt", Data: "# Hello World", FolderID: 3 };
         try {
             const response = await fetch(url, {
@@ -38,8 +64,8 @@
     }
     async function addFolder() {
         console.log("addFile");
-        const url = "http://test.johafo.de:8080/folder";
-        const data = { Name: "Hallo Welt", ParentID: 2 };
+        const url = $serverURL + "folder";
+        const data = { Name: "Hallo Welt", ParentID: 1 };
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -79,7 +105,21 @@
         {/if}
         {#if sidebarVisible}
             <div class="flex-none pr-10 w-56">
-                <RootFolderSidebar />
+                <div class="w-max h-max">
+                    <button on:click={getFolderstruture}> Reload </button>
+                    {#if rootFolder !== null}
+                        {#each rootFolder.Children as folder}
+                            <div>
+                                <FolderSidebar json={folder} indent={4} />
+                            </div>
+                        {/each}
+                        {#each rootFolder.Objects as file}
+                            <div>
+                                <FileSidebar data={file} indent={4} />
+                            </div>
+                        {/each}
+                    {/if}
+                </div>
             </div>
         {/if}
     </div>
