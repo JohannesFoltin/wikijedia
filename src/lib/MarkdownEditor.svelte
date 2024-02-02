@@ -26,8 +26,14 @@
 
     let isEditing = false;
 
-    onMount(() => {
-        getObject(objectID.get());
+    onMount(async () => {
+        await getObject(objectID.get());
+    objectID.subscribe(async (value) => {
+        if (value !== "" && value !== object.ID) {
+            await getObject(value);
+            updatePreview();
+        }
+    }); 
     });
     const md = markdownit({
         breaks: true,
@@ -35,7 +41,7 @@
 
     $: console.log(object);
 
-    //$:object.Data !== undefined && updatePreview();
+    $:if(object !== undefined) updatePreview();
 
     function updatePreview() {
         html = md.render(object.Data);
@@ -69,12 +75,7 @@
         isEditing = !isEditing;
     }
 
-    /*     objectID.subscribe(async (value) => {
-        if (value !== "" && value !== object.ID) {
-            await getObject(value);
-            updatePreview();
-        }
-    }); */
+
 
     async function getObject(value) {
         try {
