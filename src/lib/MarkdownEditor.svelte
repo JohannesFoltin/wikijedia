@@ -4,6 +4,10 @@
     import markdownit from "markdown-it";
     import { createEventDispatcher } from "svelte";
     import "../app.css";
+    import ed from "lexical";
+    import plain from "@lexical/plain-text";
+    const {registerPlainText} = plain;
+    const { createEditor } = ed;
 
     const dispatch = createEventDispatcher();
 
@@ -26,14 +30,16 @@
 
     let isEditing = false;
 
+    let editorDivElement = null;
+
     onMount(async () => {
         await getObject(objectID.get());
-    objectID.subscribe(async (value) => {
-        if (value !== "" && value !== object.ID) {
-            await getObject(value);
-            updatePreview();
-        }
-    }); 
+        objectID.subscribe(async (value) => {
+            if (value !== "" && value !== object.ID) {
+                await getObject(value);
+                updatePreview();
+            }
+        });
     });
     const md = markdownit({
         breaks: true,
@@ -41,8 +47,22 @@
 
     $: console.log(object);
 
-    $:if(object !== undefined) updatePreview();
+    $: if (editorDivElement !== undefined) initEditor();
 
+    $: if (object !== undefined) updatePreview();
+
+    function initEditor() {
+        const config = {
+            namespace: "MyEditor",
+
+            theme: {},
+            onError: console.error,
+        };
+        const editor = createEditor(config);
+        registerPlainText(editor);
+    
+        editor.setRootElement(editorDivElement);
+    }
     function updatePreview() {
         html = md.render(object.Data);
     }
@@ -75,8 +95,6 @@
         isEditing = !isEditing;
     }
 
-
-
     async function getObject(value) {
         try {
             const url = $serverURL + "object/" + value;
@@ -102,26 +120,29 @@
         } catch (error) {
             console.error(error);
         }
-    };  
+    };
 
-    const updateName = async () =>{
-        let tmp = {Name: object.Name};
+    const updateName = async () => {
+        let tmp = { Name: object.Name };
         console.log(tmp);
         try {
-            const response = await fetch($serverURL + "object/" + object.ID + "/name", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(
+                $serverURL + "object/" + object.ID + "/name",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(tmp),
                 },
-                body: JSON.stringify(tmp),
-            });
+            );
             console.log(response);
             dispatch("updateName");
             nameFieldIsLoading = false;
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     function onFileNameInput() {
         nameFieldIsLoading = true;
@@ -149,16 +170,7 @@
         </div>
         {#if isEditing}
             <div class="flex flex-row h-full w-full">
-                <div class="flex-1 pr-5">
-                    <textarea
-                        class="w-full h-full resize-none border-black border-2 rounded"
-                        bind:value={object.Data}
-                        on:input={updatePreview}
-                    ></textarea>
-                </div>
-                <div class="flex-1 pl-5 overflow-y-auto">
-                    {@html html}
-                </div>
+                <div contentEditable="true" bind:this={editorDivElement} class="w-full h-full bg-green-300"></div>
             </div>
         {:else}
             <div class="flex-1">
