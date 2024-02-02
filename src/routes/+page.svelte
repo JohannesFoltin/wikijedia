@@ -106,7 +106,7 @@
         {#if sidebarVisible}
             <div class="flex-none pr-10 w-56">
                 <div class="w-max h-max">
-                    <button on:click={getFolderstruture}> Reload </button>
+                    <button on:click={async ()=>{rootFolder = await getFolderstruture();}}> Reload </button>
                     {#if rootFolder !== null}
                         {#each rootFolder.Children as folder}
                             <div>
