@@ -124,7 +124,7 @@
         {/if}
     </div>
     {#if $objectID !== ""}
-        <MarkdownEditor class="flex-1" />
+        <MarkdownEditor on:updateName={async ()=>{rootFolder = await getFolderstruture();}} class="flex-1" />
     {:else}
         <div class="h-full w-full flex items-center justify-center">
             <h1>

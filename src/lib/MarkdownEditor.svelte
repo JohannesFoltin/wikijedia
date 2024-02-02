@@ -4,9 +4,6 @@
     import markdownit from "markdown-it";
     import { createEventDispatcher } from "svelte";
     import "../app.css";
-    import { basicSetup, EditorView } from "codemirror";
-    import { markdown } from "@codemirror/lang-markdown";
-    import { languages } from "@codemirror/language-data";
 
     const dispatch = createEventDispatcher();
 
