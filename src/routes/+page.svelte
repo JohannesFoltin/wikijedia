@@ -1,17 +1,22 @@
 <script lang="js">
-    import { objectID } from "$lib/store.js";
+    import { objectID, serverURL } from "$lib/store.js";
+    import { onMount } from "svelte";
     import MarkdownEditor from "../lib/MarkdownEditor.svelte";
     import RootFolderSidebar from "../lib/RootFolderSidebar.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
 
     let sidebarVisible = true;
 
+    onMount(()=>{
+        serverURL.set("http://localhost:8080/")
+    });
+
     function toggleSidebar() {
         sidebarVisible = !sidebarVisible;
     }
     async function addFile() {
         console.log("addFile");
-        const url = "http://test.johafo.de:8080/jsonobj";
+        const url = $serverURL + "jsonobj";
         const data = { Name: "Hallo Welt", Data: "# Hello World", FolderID: 3 };
         try {
             const response = await fetch(url, {

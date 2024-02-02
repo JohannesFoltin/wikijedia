@@ -1,12 +1,13 @@
 <script>
     import { onMount } from "svelte";
+    import {serverURL} from "$lib/store";
     import FileSidebar from "./FileSidebar.svelte";
     import FolderSidebar from "./FolderSidebar.svelte";
 
     let rootFolder = null;
 
     onMount(async () => {
-        const response = await fetch("http://test.johafo.de:8080/structure");
+        const response = await fetch($serverURL +"structure");
         var tmp = await response.json();
         rootFolder = formatFolders(tmp);
         console.log(rootFolder);

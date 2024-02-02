@@ -1,11 +1,12 @@
 <script lang="js">
-    import { objectID } from "./store";
+    import { objectID,serverURL } from "./store";
     import { onMount } from "svelte";
     import markdownit from "markdown-it";
     import "../app.css";
     import { basicSetup, EditorView } from "codemirror";
     import { markdown } from "@codemirror/lang-markdown";
     import { languages } from "@codemirror/language-data";
+
 
     /**
      *
@@ -26,18 +27,17 @@
 
     let isEditing = false;
 
-    let htmlEditorElement;
-
+    onMount(() => {
+        getObject(objectID.get());
+    });
     const md = markdownit({
         breaks: true,
     });
 
-   $: object.Data !== undefined && updatePreview();
+    $:console.log(object);
 
-    onMount(()=>{
-        object = getObject($objectID);
-    });
-    
+    //$:object.Data !== undefined && updatePreview();
+
     function updatePreview() {
         html = md.render(object.Data);
     }
@@ -70,30 +70,39 @@
         isEditing = !isEditing;
     }
 
-    objectID.subscribe(async (value) => {
+/*     objectID.subscribe(async (value) => {
         if (value !== "" && value !== object.ID) {
             await getObject(value);
             updatePreview();
         }
-    });
+    }); */
+
 
     async function getObject(value) {
         try {
-            const url = "http://test.johafo.de:8080/object/" + value;
+            const url = $serverURL + "object/" + value;
             const response = await fetch(url);
             const data = await response.json();
-            return data;
+            console.log("hallo");
+            object = data;
         } catch (error) {
             console.error(error);
         }
     }
 
-    const sendRequest = async () => {
+    const sendObjectToServer = async () => {
         try {
-            // Make PUT request here
-            // ...
-
-            // If request is successful
+            const response = await fetch(
+                $serverURL + "object/" + object.ID,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(object),
+                },
+            );
+            console.log(response);
             nameFieldIsLoading = false;
         } catch (error) {
             console.error(error);
@@ -103,36 +112,14 @@
     function onFileNameInput() {
         nameFieldIsLoading = true;
         clearTimeout(safeTimeoutForName);
-        safeTimeoutForName = setTimeout(sendRequest, 1000);
+        safeTimeoutForName = setTimeout(sendObjectToServer, 500);
     }
-
-    async function save() {
-        const data = { Data: markdownText };
-        try {
-            const response = await fetch(
-                "http://test.johafo.de:8080/object/" + object.ID + "/data",
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                },
-            );
-            if (response.ok) {
-                console.log("Markdown text posted successfully");
-            } else {
-                console.error("Failed to post markdown text");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    
 </script>
 
-{#await object}
-<p>Loading...</p>
-{:then}
+{#if object == undefined}
+    <p class="flex justify-center items-center">Loading...</p>
+{:else}
     <div class="flex-col w-full h-full">
         <div class="flex items-end">
             <input
@@ -151,10 +138,10 @@
             <div class="flex flex-row h-full w-full">
                 <div class="flex-1 pr-5">
                     <textarea
-                    class="w-full h-full resize-none border-black border-2 rounded"
-                    bind:value={object.Data}
-                    on:input={updatePreview}
-                ></textarea>
+                        class="w-full h-full resize-none border-black border-2 rounded"
+                        bind:value={object.Data}
+                        on:input={updatePreview}
+                    ></textarea>
                 </div>
                 <div class="flex-1 pl-5 overflow-y-auto">
                     {@html html}
@@ -179,9 +166,9 @@
         </button>
         <button
             class="fixed bottom-4 right-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            on:click={save}
+            on:click={sendObjectToServer}
         >
             Save
         </button>
     </div>
-{/await}
+{/if}
