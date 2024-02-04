@@ -1,17 +1,21 @@
 <script>
-    import { objectID } from "./store";
+    import { currentObject } from "./store";
 
     export let data = {};
     export let indent = 0;
 
     function setInhalt() {
-        objectID.set(data.ID);
+        currentObject.set(data);
     }
 
     let isSelected = false;
 
-    objectID.subscribe((value) => {
-        if ((value == data.ID)) {
+    currentObject.subscribe((value) => {
+        if(value === null){
+            isSelected = false;
+            return;
+        }
+        if ((value.ID == data.ID)) {
             isSelected = true;
         } else {
             isSelected = false;

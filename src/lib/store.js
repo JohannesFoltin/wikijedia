@@ -1,23 +1,25 @@
 // @ts-nocheck
 import { writable, get } from "svelte/store";
 
-function currentObjectID() {
-    const writableObject = writable("");
+function currentObjectMethod() {
+    const writableObject = writable(null);
     const {set, subscribe} = writableObject;
     return {
         subscribe,
         get: () => get(writableObject),
         set: (value) => set(value),
-        reset: () => set("")
+        reset: () => set(null)
     };
 }
 
-export const objectID = currentObjectID();
+export const currentObject = currentObjectMethod();
 
 function currentServerURL() {
-    const { subscribe, set } = writable("http://localhost:8080/");
+    const writableObject = writable("http://localhost:8080/");
+    const {set, subscribe} = writableObject;
     return {
         subscribe,
+        get: () => get(writableObject),
         set: (value) => set(value),
         reset: () => set("")
     };

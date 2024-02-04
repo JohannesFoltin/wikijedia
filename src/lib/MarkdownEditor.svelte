@@ -1,5 +1,5 @@
 <script lang="js">
-    import { objectID, serverURL } from "./store";
+    import { currentObject, serverURL } from "./store";
     import { onMount } from "svelte";
     import markdownit from "markdown-it";
     import { createEventDispatcher } from "svelte";
@@ -33,10 +33,10 @@
     let editorDivElement = null;
 
     onMount(async () => {
-        await getObject(objectID.get());
-        objectID.subscribe(async (value) => {
-            if (value !== "" && value !== object.ID) {
-                await getObject(value);
+        await getObject(currentObject.get().ID);
+        currentObject.subscribe(async (value) => {
+            if (value !== null && value.ID !== object.ID) {
+                await getObject(value.ID);
                 updatePreview();
             }
         });

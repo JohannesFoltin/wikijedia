@@ -1,5 +1,5 @@
 <script lang="js">
-    import { objectID, serverURL } from "$lib/store.js";
+    import { currentObject, serverURL } from "$lib/store.js";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
@@ -43,7 +43,12 @@
     async function addFile() {
         console.log("addFile");
         const url = $serverURL + "object";
-        const data = { Name: "Hallo Welt", Data: "# Hello World", FolderID: 3 };
+        let data;
+        if (currentObject.get() !== null){
+            data = { Name: "New Object", Data: "# Hello World", FolderID: currentObject.get().FolderID };
+        }else{
+            data = { Name: "New Object", Data: "# Hello World", FolderID: 1 };
+        }
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -55,6 +60,7 @@
 
             if (response.ok) {
                 console.log("Post request successful");
+                rootFolder = await getFolderstruture();
             } else {
                 console.error("Post request failed");
             }
@@ -62,6 +68,7 @@
             console.error("An error occurred:", error);
         }
     }
+
     async function addFolder() {
         console.log("addFile");
         const url = $serverURL + "folder";
@@ -122,7 +129,7 @@
             </div>
         {/if}
     </div>
-    {#if $objectID !== ""}
+    {#if $currentObject !== null}
         <MarkdownEditor on:updateName={async ()=>{rootFolder = await getFolderstruture();}} class="flex-1" />
     {:else}
         <div class="h-full w-full flex items-center justify-center">
