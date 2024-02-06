@@ -29,6 +29,9 @@ Functional Requirements
 
     7. 6 bitte auch für Bilder
 
+    8. Eigne Extension für Lexical schreiben
+        1. Verstehen wie zum henker der quatsch funktioniert
+        2. Extension für [[INTERNALLINK]] schreiben
 
 # create-svelte
 

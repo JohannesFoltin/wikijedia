@@ -6,14 +6,13 @@
     import { createEventDispatcher } from "svelte";
     import "../app.css";
     import ed from "lexical";
-    import plain from "@lexical/plain-text";
-    const { registerPlainText } = plain;
+
     const { createEditor } = ed;
     import richtext from "@lexical/rich-text";
     const { registerRichText,HeadingNode ,QuoteNode} = richtext;
 
     import code from "@lexical/code";
-    const {CodeNode} = code;
+    const {CodeNode,registerCodeHighlighting,CodeHighlightNode} = code;
 
     import list from "@lexical/list";
     const {ListNode,ListItemNode,} = list;
@@ -74,6 +73,7 @@
                 HeadingNode,
                 QuoteNode,
                 CodeNode,
+                CodeHighlightNode,
                 ListNode,
                 ListItemNode,
                 LinkNode,
@@ -82,6 +82,7 @@
         };
         const editor = createEditor(config);
         registerRichText(editor);
+        registerCodeHighlighting(editor);
 
         registerMarkdownShortcuts(editor,TRANSFORMERS);
         editor.setRootElement(editorDivElement);
@@ -196,7 +197,7 @@
                 <div
                     contentEditable="true"
                     bind:this={editorDivElement}
-                    class="w-full h-full bg-green-300"
+                    class="w-full h-full border-2 border-gray-600 border-solid"
                 ></div>
             </div>
         {:else}
