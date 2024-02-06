@@ -19,7 +19,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@lexical/code": "^0.13.1",
+		"@lexical/markdown": "^0.13.1",
 		"@lexical/plain-text": "^0.13.1",
+		"@lexical/rich-text": "^0.13.1",
 		"lexical": "^0.13.1",
 		"lucide-svelte": "^0.316.0",
 		"markdown-it": "^14.0.0",

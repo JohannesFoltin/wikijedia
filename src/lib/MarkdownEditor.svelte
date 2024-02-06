@@ -1,4 +1,5 @@
 <script lang="js">
+	import { nodes } from './../../.svelte-kit/generated/client/app.js';
     import { currentObject, serverURL } from "./store";
     import { onMount } from "svelte";
     import markdownit from "markdown-it";
@@ -6,9 +7,22 @@
     import "../app.css";
     import ed from "lexical";
     import plain from "@lexical/plain-text";
-    const {registerPlainText} = plain;
+    const { registerPlainText } = plain;
     const { createEditor } = ed;
+    import richtext from "@lexical/rich-text";
+    const { registerRichText,HeadingNode ,QuoteNode} = richtext;
 
+    import code from "@lexical/code";
+    const {CodeNode} = code;
+
+    import list from "@lexical/list";
+    const {ListNode,ListItemNode,} = list;
+
+    import link from "@lexical/link";
+    const {LinkNode} = link;
+
+    import lexicalmarkdown from "@lexical/markdown";
+    const {registerMarkdownShortcuts,TRANSFORMERS,TransformerNode} = lexicalmarkdown;
     const dispatch = createEventDispatcher();
 
     /**
@@ -54,13 +68,22 @@
     function initEditor() {
         const config = {
             namespace: "MyEditor",
-
+            //editorState: ()=> lexicalmarkdown.$convertFromMarkdownString(object.Data,lexicalmarkdown.TRANSFORMERS),
             theme: {},
+            nodes: [
+                HeadingNode,
+                QuoteNode,
+                CodeNode,
+                ListNode,
+                ListItemNode,
+                LinkNode,
+            ],
             onError: console.error,
         };
         const editor = createEditor(config);
-        registerPlainText(editor);
-    
+        registerRichText(editor);
+
+        registerMarkdownShortcuts(editor,TRANSFORMERS);
         editor.setRootElement(editorDivElement);
     }
     function updatePreview() {
@@ -170,7 +193,11 @@
         </div>
         {#if isEditing}
             <div class="flex flex-row h-full w-full">
-                <div contentEditable="true" bind:this={editorDivElement} class="w-full h-full bg-green-300"></div>
+                <div
+                    contentEditable="true"
+                    bind:this={editorDivElement}
+                    class="w-full h-full bg-green-300"
+                ></div>
             </div>
         {:else}
             <div class="flex-1">
