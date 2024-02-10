@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
 
     let inputValue = '';
-    let isLoading = false;
+    let isLoading:boolean = false;
     let isSuccess = false;
 
     const sendRequest = async () => {
