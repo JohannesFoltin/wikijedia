@@ -65,7 +65,7 @@
                 </div>
                 {#if sidebarVisible}
                 <div class="flex flex-grow items-center justify-center">
-                    <AddButton />
+                    <AddButton on:update={async ()=>{rootFolder = await getFolderstruture()}} />
                 </div>
                 {/if}
             </div>

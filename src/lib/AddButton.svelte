@@ -3,8 +3,15 @@
   import { fly } from "svelte/transition";
   import { PlusCircle, FilePlus, FolderPlus } from "lucide-svelte";
   import { serverURL } from "./store";
+    import { createEventDispatcher } from "svelte";
+    import Dialog from "./Dialog.svelte";
+
+  const depatch = createEventDispatcher();
+  
+  let dialog = false;
 
   async function addFile() {
+    dialog = true
     console.log("addFile");
     const url = $serverURL + "object";
     let data;
@@ -21,6 +28,7 @@
       });
 
       if (response.ok) {
+        depatch("update");
         console.log("Post request successful");
       } else {
         console.error("Post request failed");
@@ -44,6 +52,7 @@
       });
 
       if (response.ok) {
+        depatch("update");
         console.log("Post request successful");
       } else {
         console.error("Post request failed");
@@ -63,24 +72,29 @@
   <DropdownMenu.Content
     class="w-full max-w-[229px] z-10 rounded-xl border border-muted bg-background bg-white px-1 py-1.5 shadow-popover"
     transition={fly}
-    sideOffset={8}
+    sideOffset={4}
     overlap={true}
   >
     <DropdownMenu.Item
-      class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
+      class="flex h-10 select-none items-center rounded-button rounded-xl py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted hover:bg-gray-200"
+      on:click={addFile}
     >
       <div class="flex items-center">
         <FilePlus class="mr-2 size-5 text-foreground-alt" />
-        Add File
+        Neue Datei
       </div>
     </DropdownMenu.Item>
     <DropdownMenu.Item
-      class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
-    >
+      class="flex h-10 select-none items-center rounded-button rounded-xl hover:bg-gray-200 py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
+      on:click={addFolder}
+      >
       <div class="flex items-center">
         <FolderPlus class="mr-2 size-5 text-foreground-alt" />
-        Add Folder
+        Neuer Ordner
       </div>
     </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
+{#if dialog}
+    <Dialog></Dialog>
+{/if}

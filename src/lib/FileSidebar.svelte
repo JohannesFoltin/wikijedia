@@ -27,7 +27,7 @@
     <button
         style="padding-left: {indent}px"
         class="flex hover:bg-gray-200 hover:rounded-lg w-full h-full"
-        on:click={setInhalt}
+        on:dblclick={setInhalt}
     >
         {data.Name}
     </button>
@@ -35,7 +35,7 @@
     <button
         style="padding-left: {indent}px"
         class="flex bg-gray-200 rounded-lg w-full h-full"
-        on:click={setInhalt}
+        on:dblclick={setInhalt}
     >
         {data.Name}
     </button>

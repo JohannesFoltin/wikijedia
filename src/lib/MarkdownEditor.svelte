@@ -24,9 +24,6 @@
     let safeTimeoutForName;
 
     let isEditing = false;
-
-    let editorDivElement = null;
-
     onMount(async () => {
         await getObject(currentObject.get().ID);
         currentObject.subscribe(async (value) => {
