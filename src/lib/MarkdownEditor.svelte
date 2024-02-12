@@ -1,27 +1,9 @@
 <script lang="js">
-	import { nodes } from './../../.svelte-kit/generated/client/app.js';
     import { currentObject, serverURL } from "./store";
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import markdownit from "markdown-it";
-    import { createEventDispatcher } from "svelte";
     import "../app.css";
-    import ed from "lexical";
 
-    const { createEditor } = ed;
-    import richtext from "@lexical/rich-text";
-    const { registerRichText,HeadingNode ,QuoteNode} = richtext;
-
-    import code from "@lexical/code";
-    const {CodeNode,registerCodeHighlighting,CodeHighlightNode} = code;
-
-    import list from "@lexical/list";
-    const {ListNode,ListItemNode,} = list;
-
-    import link from "@lexical/link";
-    const {LinkNode} = link;
-
-    import lexicalmarkdown from "@lexical/markdown";
-    const {registerMarkdownShortcuts,TRANSFORMERS,TransformerNode} = lexicalmarkdown;
     const dispatch = createEventDispatcher();
 
     /**
@@ -54,66 +36,19 @@
             }
         });
     });
+
     const md = markdownit({
         breaks: true,
     });
 
     $: console.log(object);
 
-    $: if (editorDivElement !== undefined) initEditor();
-
     $: if (object !== undefined) updatePreview();
 
-    function initEditor() {
-        const config = {
-            namespace: "MyEditor",
-            //editorState: ()=> lexicalmarkdown.$convertFromMarkdownString(object.Data,lexicalmarkdown.TRANSFORMERS),
-            theme: {},
-            nodes: [
-                HeadingNode,
-                QuoteNode,
-                CodeNode,
-                CodeHighlightNode,
-                ListNode,
-                ListItemNode,
-                LinkNode,
-            ],
-            onError: console.error,
-        };
-        const editor = createEditor(config);
-        registerRichText(editor);
-        registerCodeHighlighting(editor);
-
-        registerMarkdownShortcuts(editor,TRANSFORMERS);
-        editor.setRootElement(editorDivElement);
-    }
     function updatePreview() {
         html = md.render(object.Data);
     }
 
-    //  htmlEditorElement && initEditor();
-
-    // /*    $:if (view !== undefined) {
-    //     markdownText = view.state.doc.toString();
-    //     updatePreview();
-    //     console.log(markdownText)
-    // } */
-
-    // let view;
-
-    // function initEditor() {
-    //     console.log(htmlEditorElement);
-    //     view = new EditorView({
-    //         doc: markdownText,
-    //         extensions: [basicSetup, markdown({ codeLanguages: languages })],
-    //         parent: htmlEditorElement,
-    //     });
-    //     view.state.onChange(() => {
-    //         markdownText = view.state.doc.toString();
-    //         updatePreview();
-    //     });
-    //     console.log(view.state.doc.toString());
-    // }
 
     function toggleEditing() {
         isEditing = !isEditing;
@@ -194,11 +129,16 @@
         </div>
         {#if isEditing}
             <div class="flex flex-row h-full w-full">
-                <div
-                    contentEditable="true"
-                    bind:this={editorDivElement}
-                    class="w-full h-full border-2 border-gray-600 border-solid"
-                ></div>
+                <div class="flex-1 pr-5">
+                    <textarea
+                        class="w-full h-full resize-none border-black border-2 rounded"
+                        bind:value={object.Data}
+                        on:input={updatePreview}
+                    ></textarea>
+                </div>
+                <div class="flex-1 pl-5 overflow-y-auto">
+                    {@html html}
+                </div>
             </div>
         {:else}
             <div class="flex-1">

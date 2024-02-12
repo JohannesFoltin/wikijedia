@@ -8,10 +8,11 @@
     import { PinInput } from "bits-ui";
     import { Toggle } from "bits-ui";
     import { LockKeyhole, UnlockKeyhole } from "lucide-svelte";
+    import AddButton from "../lib/AddButton.svelte";
 
     let value: string[] | undefined = ["5", "1", "3", "7"];
 
-    let unlocked = false;
+    let unlocked = true;
     let pinInputType: "text" | "password" = "password";
     $: pinInputType = unlocked ? "text" : "password";
     let sidebarVisible = true;
@@ -47,82 +48,27 @@
 
         return rootFolder;
     }
-
-    async function addFile() {
-        console.log("addFile");
-        const url = $serverURL + "object";
-        let data;
-        if (currentObject.get() !== null) {
-            data = {
-                Name: "New Object",
-                Data: "# Hello World",
-                FolderID: currentObject.get().FolderID,
-            };
-        } else {
-            data = { Name: "New Object", Data: "# Hello World", FolderID: 1 };
-        }
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                console.log("Post request successful");
-                rootFolder = await getFolderstruture();
-            } else {
-                console.error("Post request failed");
-            }
-        } catch (error) {
-            console.error("An error occurred:", error);
-        }
-    }
-
-    async function addFolder() {
-        console.log("addFile");
-        const url = $serverURL + "folder";
-        const data = { Name: "Hallo Welt", ParentID: 1 };
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                console.log("Post request successful");
-            } else {
-                console.error("Post request failed");
-            }
-        } catch (error) {
-            console.error("An error occurred:", error);
-        }
-    }
 </script>
 
 {#if unlocked}
     <div class="flex h-screen w-screen">
         <div class="pr-4">
-            {#if sidebarVisible}
-                <div class="flex items-center justify-around">
-                    <button class="" on:click={toggleSidebar}>
-                        <PanelLeftClose />
-                    </button>
-                    <button on:click={addFile}> AddF </button>
-                    <button on:click={addFolder}> AddFo </button>
-                </div>
-            {:else}
-                <div class="flex items-center">
-                    <button class="" on:click={toggleSidebar}>
-                        <PanelLeftOpen />
+            <div class="h-10 w-full flex flex-row">
+                <div class="flex w-min items-center pl-2">
+                    <button class="h-8" on:click={toggleSidebar}>
+                        {#if sidebarVisible}
+                            <PanelLeftClose class="h-full" />
+                        {:else}
+                            <PanelLeftOpen />
+                        {/if}
                     </button>
                 </div>
-            {/if}
+                {#if sidebarVisible}
+                <div class="flex flex-grow items-center justify-center">
+                    <AddButton />
+                </div>
+                {/if}
+            </div>
             {#if sidebarVisible}
                 <div class="flex-none w-56">
                     <div class="w-full h-max">
