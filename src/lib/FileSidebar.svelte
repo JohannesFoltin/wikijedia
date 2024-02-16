@@ -26,7 +26,7 @@
 {#if !isSelected}
     <button
         style="padding-left: {indent}px"
-        class="flex hover:bg-gray-200 hover:rounded-lg w-full h-full"
+        class="flex hover:bg-gray-200 hover:rounded-lg w-full h-full truncate"
         on:dblclick={setInhalt}
     >
         {data.Name}
@@ -34,7 +34,7 @@
 {:else}
     <button
         style="padding-left: {indent}px"
-        class="flex bg-gray-200 rounded-lg w-full h-full"
+        class="flex bg-gray-200 rounded-lg w-full h-full truncate"
         on:dblclick={setInhalt}
     >
         {data.Name}

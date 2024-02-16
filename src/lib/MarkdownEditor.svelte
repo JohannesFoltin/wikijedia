@@ -1,4 +1,4 @@
-<script lang="js">
+<script lang="ts">
     import { currentObject, serverURL } from "./store";
     import { createEventDispatcher, onMount } from "svelte";
     import markdownit from "markdown-it";
@@ -46,7 +46,6 @@
         html = md.render(object.Data);
     }
 
-
     function toggleEditing() {
         isEditing = !isEditing;
     }
@@ -65,7 +64,7 @@
 
     const sendObjectToServer = async () => {
         try {
-            const response = await fetch($serverURL + "object/" + object.ID, {
+            const response = await fetch($serverURL + "object/" + object.ID + "/", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +82,7 @@
         console.log(tmp);
         try {
             const response = await fetch(
-                $serverURL + "object/" + object.ID + "/name",
+                $serverURL + "object/" + object.ID + "/name/",
                 {
                     method: "PUT",
                     headers: {
@@ -105,6 +104,10 @@
         clearTimeout(safeTimeoutForName);
         safeTimeoutForName = setTimeout(updateName, 500);
     }
+
+    function onPaste(event: ClipboardEvent) {
+        console.log("paste Type: " + event.clipboardData.files[0].type);
+    }
 </script>
 
 {#if object == undefined}
@@ -124,41 +127,47 @@
                 <div class="success-icon">Success!</div>
             {/if}
         </div>
-        {#if isEditing}
-            <div class="flex flex-row h-full w-full">
-                <div class="flex-1 pr-5">
-                    <textarea
-                        class="w-full h-full resize-none border-black border-2 rounded"
-                        bind:value={object.Data}
-                        on:input={updatePreview}
-                    ></textarea>
-                </div>
-                <div class="flex-1 pl-5 overflow-y-auto">
-                    {@html html}
-                </div>
-            </div>
-        {:else}
-            <div class="flex-1">
-                <div class="flex-1 overflow-y-auto">
-                    {@html html}
-                </div>
-            </div>
-        {/if}
-        <button
-            class="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            on:click={toggleEditing}
-        >
+
+        {#if object.Type == "MD"}
             {#if isEditing}
-                Preview
+                <div class="flex flex-row h-full w-full">
+                    <div class="flex-1 pr-5">
+                        <textarea
+                            class="w-full h-full resize-none border-black border-2 rounded"
+                            bind:value={object.Data}
+                            on:paste={onPaste}
+                            on:input={updatePreview}
+                        ></textarea>
+                    </div>
+                    <div class="flex-1 pl-5 overflow-y-auto">
+                        {@html html}
+                    </div>
+                </div>
             {:else}
-                Edit
+                <div class="flex-1">
+                    <div class="flex-1 overflow-y-auto">
+                        {@html html}
+                    </div>
+                </div>
             {/if}
-        </button>
-        <button
-            class="fixed bottom-4 right-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            on:click={sendObjectToServer}
-        >
-            Save
-        </button>
+            <button
+                class="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                on:click={toggleEditing}
+            >
+                {#if isEditing}
+                    Preview
+                {:else}
+                    Edit
+                {/if}
+            </button>
+            <button
+                class="fixed bottom-4 right-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                on:click={sendObjectToServer}
+            >
+                Save
+            </button>
+        {:else if object.Type == "PNG"}
+            <img src={object.Data} alt="Preview" />
+        {/if}
     </div>
 {/if}
