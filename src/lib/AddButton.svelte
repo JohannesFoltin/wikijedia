@@ -39,9 +39,13 @@
   }
 
   async function addFolder() {
-    console.log("addFile");
+    console.log("addFolder");
     const url = $serverURL + "folder";
+
     const data = { Name: "Hallo Welt", ParentID: 1 };
+
+    console.log(JSON.stringify(data));
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -50,7 +54,6 @@
         },
         body: JSON.stringify(data),
       });
-
       if (response.ok) {
         depatch("update");
         console.log("Post request successful");

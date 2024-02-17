@@ -64,7 +64,7 @@
 
     const sendObjectToServer = async () => {
         try {
-            const response = await fetch($serverURL + "object/" + object.ID + "/", {
+            const response = await fetch($serverURL + "object/" + object.ID , {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +82,7 @@
         console.log(tmp);
         try {
             const response = await fetch(
-                $serverURL + "object/" + object.ID + "/name/",
+                $serverURL + "object/" + object.ID + "/name",
                 {
                     method: "PUT",
                     headers: {
