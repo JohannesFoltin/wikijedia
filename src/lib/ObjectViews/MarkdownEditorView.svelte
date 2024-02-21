@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount} from "svelte";
     import markdownit from "markdown-it";
-    import "../app.css";
+    import "../../app.css";
 
 
     export let data : string;

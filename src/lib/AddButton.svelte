@@ -16,7 +16,7 @@
     const url = $serverURL + "object";
     let data;
 
-    data = { Name: "New Object", Data: "# Hello World", FolderID: 1 };
+    data = { Name: "New Object",Type:"MD", Data: "# Hello World", FolderID: 1 };
 
     try {
       const response = await fetch(url, {

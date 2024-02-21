@@ -1,10 +1,11 @@
 <script lang="ts">
-    import MarkdownEditorField from './MarkdownEditorField.svelte';
+    import MarkdownEditorField from './MarkdownEditorView.svelte';
 
-    import {currentObject, serverURL} from "./store";
+    import {currentObject, serverURL} from "../store";
     import {createEventDispatcher, onMount} from "svelte";
-    import "../app.css";
-    import type {BackendObject} from "./types";
+    import "../../app.css";
+    import type {BackendObject} from "../types";
+    import PictureView from './PictureView.svelte';
 
     const dispatch = createEventDispatcher();
 
@@ -103,8 +104,8 @@
         <div class="w-full h-full">
             {#if object.Type === "MD"}
                 <MarkdownEditorField data={object.Data}></MarkdownEditorField>
-            {:else if object.Type === "PNG"}
-                <img src={object.Data} alt="Preview"/>
+            {:else if object.Type === "image/png"}
+                <PictureView data={$serverURL+"/object/data/"+object.ID}></PictureView>
             {/if}
         </div>
     </div>

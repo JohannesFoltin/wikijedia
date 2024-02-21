@@ -3,7 +3,7 @@
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
-    import MarkdownEditor from "../lib/EditView.svelte";
+    import MarkdownEditor from "../lib/ObjectViews/ObjectView.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
     import { PinInput } from "bits-ui";
     import { Toggle } from "bits-ui";
