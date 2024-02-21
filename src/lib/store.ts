@@ -1,14 +1,14 @@
 import { writable, get } from "svelte/store";
-import { BackendObject } from "$lib/structureData";
+import type { BackendObject } from "./types";
 
 function currentObjectMethod() {
-    const object : null | BackendObject = null;
+    const object: BackendObject | null = null;
     const writableObject = writable(object);
     const {set, subscribe} = writableObject;
     return {
         subscribe,
         get: () => get(writableObject),
-        set: (value:null|BackendObject) => set(value),
+        set: (value) => set(value),
         reset: () => set(null)
     };
 }

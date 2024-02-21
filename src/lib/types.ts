@@ -16,4 +16,13 @@ interface BackendObject {
     FolderID: number;
 }
 
-export { BackendObject };
+
+interface BackendFolder{
+    ID: number;
+    Name: string;
+    ParentID: number;
+    Children: BackendFolder[];
+    Objects: BackendObject[];
+}
+
+export { BackendObject, BackendFolder };

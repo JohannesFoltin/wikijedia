@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { currentObject, serverURL } from "$lib/store";
+    import { currentObject, serverURL } from "../lib/store";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
@@ -9,14 +9,18 @@
     import { Toggle } from "bits-ui";
     import { LockKeyhole, UnlockKeyhole } from "lucide-svelte";
     import AddButton from "../lib/AddButton.svelte";
+    import type { BackendFolder } from "../lib/types";
 
     let value: string[] | undefined = ["5", "1", "3", "7"];
 
-    let unlocked = true;
+    let unlocked : boolean = true;
+
     let pinInputType: "text" | "password" = "password";
     $: pinInputType = unlocked ? "text" : "password";
-    let sidebarVisible = true;
-    let rootFolder = null;
+
+    let sidebarVisible : boolean = true;
+
+    let rootFolder : BackendFolder = null;
 
     onMount(async () => {
         serverURL.set("http://localhost:8080/");
@@ -30,23 +34,24 @@
 
     async function getFolderstruture() {
         const response = await fetch($serverURL + "structure");
-        var tmp = await response.json();
+        const tmp : string = await response.json();
+        const test: BackendFolder[] = JSON.parse(JSON.stringify(tmp));
 
-        const folderMap = {};
+        let folderMap = new Map<number, BackendFolder>();
 
         // First pass: create a map of all folders by ID
-        for (const folder of tmp) {
+        for (const folder of test) {
             folderMap[folder.ID] = { ...folder, Children: [] };
         }
 
         // Second pass: add each folder to its parent's Children array
-        for (const folder of tmp) {
+        for (const folder of test) {
             if (folder.ParentID in folderMap) {
                 folderMap[folder.ParentID].Children.push(folderMap[folder.ID]);
             }
         }
         const rootFolder = folderMap[1];
-
+        console.log(rootFolder);
         return rootFolder;
     }
 </script>
@@ -76,7 +81,7 @@
                         {#if rootFolder !== null}
                             {#each rootFolder.Children as folder}
                                 <div>
-                                    <FolderSidebar json={folder} indent={4} />
+                                    <FolderSidebar folder={folder} indent={4} />
                                 </div>
                             {/each}
                             {#each rootFolder.Objects as file}

@@ -4,7 +4,7 @@
     import {currentObject, serverURL} from "./store";
     import {createEventDispatcher, onMount} from "svelte";
     import "../app.css";
-    import {BackendObject} from "$lib/structure";
+    import type {BackendObject} from "./types";
 
     const dispatch = createEventDispatcher();
 
