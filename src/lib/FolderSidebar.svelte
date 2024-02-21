@@ -37,7 +37,7 @@
     {#if folder.Children.length > 0}
         {#each folder.Children as child}
             <div>
-                <svelte:self json={child} indent={newIdent} />
+                <svelte:self folder={child} indent={newIdent} />
             </div>
         {/each}
     {/if}
