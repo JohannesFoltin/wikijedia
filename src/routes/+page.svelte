@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { currentObject, serverURL } from "../lib/store.js";
+    import { currentObject, serverURL } from "$lib/store";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
-    import MarkdownEditor from "../lib/MarkdownEditor.svelte";
+    import MarkdownEditor from "../lib/EditView.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
     import { PinInput } from "bits-ui";
     import { Toggle } from "bits-ui";
@@ -21,6 +21,7 @@
     onMount(async () => {
         serverURL.set("http://localhost:8080/");
         rootFolder = await getFolderstruture();
+        console.log(rootFolder)
     });
 
     function toggleSidebar() {

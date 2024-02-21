@@ -1,8 +1,9 @@
-<script>
-    import { currentObject } from "./store";
+<script lang="ts">
+    import { currentObject } from "./store.js";
+    import {BackendObject} from "$lib/structure";
 
-    export let data = {};
-    export let indent = 0;
+    export let data : BackendObject;
+    export let indent : number = 0;
 
     function setInhalt() {
         currentObject.set(data);

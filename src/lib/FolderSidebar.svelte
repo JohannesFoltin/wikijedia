@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
     import FileSidebar from "./FileSidebar.svelte";
-    import { ChevronDown, ChevronRight, ChevronUp } from "lucide-svelte";
+    import { ChevronDown, ChevronRight } from "lucide-svelte";
 
     export let json = {};
     export let indent = 0;

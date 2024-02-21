@@ -1,13 +1,14 @@
-// @ts-nocheck
 import { writable, get } from "svelte/store";
+import { BackendObject } from "$lib/structureData";
 
 function currentObjectMethod() {
-    const writableObject = writable(null);
+    const object : null | BackendObject = null;
+    const writableObject = writable(object);
     const {set, subscribe} = writableObject;
     return {
         subscribe,
         get: () => get(writableObject),
-        set: (value) => set(value),
+        set: (value:null|BackendObject) => set(value),
         reset: () => set(null)
     };
 }
@@ -20,7 +21,7 @@ function currentServerURL() {
     return {
         subscribe,
         get: () => get(writableObject),
-        set: (value) => set(value),
+        set: (value:string) => set(value),
         reset: () => set("")
     };
 }
