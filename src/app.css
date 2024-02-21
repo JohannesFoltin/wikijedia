@@ -4,9 +4,29 @@
 
 @layer base {
     h1 {
-      @apply text-2xl;
+      @apply text-4xl;
     }
     h2 {
+      @apply text-2xl;
+    }
+    h3 {
       @apply text-xl;
+    }
+    h4 {
+      @apply text-lg;
+    }
+    pre {
+      @apply w-full;
+      @apply bg-gray-100;
+      @apply p-1;
+      @apply rounded-md;
+    }
+    code {
+      @apply text-sm;
+      @apply font-mono;
+    }
+    hr {
+      @apply pt-5;
+      @apply pb-5;
     }
   }

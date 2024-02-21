@@ -2,26 +2,28 @@
     import { onMount} from "svelte";
     import markdownit from "markdown-it";
     import "../../app.css";
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
 
 
     export let data : string;
 
     let html = "";
 
-
     let isEditing = false;
+    
     onMount(() => {
         console.log("onMount");
         console.log(data);
         updatePreview()
     });
 
+    $:data && updatePreview();
+
     const md = markdownit({
         breaks: true,
     });
-
-    $: console.log(data);
-
 
     function updatePreview() {
         html = md.render(data);
@@ -37,8 +39,7 @@
     }
 
     function sendObjectToServer() {
-        console.log("sendObjectToServer");
-        console.log(data);
+        dispatch("update");
     }
 </script>
 
@@ -50,16 +51,15 @@
                             order-black border-2 rounded"
                                 bind:value={data}
                                 on:paste={onPaste}
-                                on:input={updatePreview}
                         ></textarea>
         </div>
-        <div class="flex-1 pl-5 overflow-y-auto">
+        <div class="flex-1 pl-5 overflow-y-auto pr-5">
             {@html html}
         </div>
     </div>
 {:else}
     <div class="flex-1">
-        <div class="flex-1 overflow-y-auto">
+        <div class="flex-1 overflow-y-auto pr-5">
             {@html html}
         </div>
     </div>

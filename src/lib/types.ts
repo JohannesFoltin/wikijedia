@@ -8,7 +8,7 @@
  * @param {number} object.FolderID ID des Ordners, in dem das Objekt liegt
  *
  */
-interface BackendObject {
+interface  BackendObject {
     ID: number;
     Name: string;
     Type: string;

@@ -82,6 +82,8 @@
         safeTimeoutForName = setTimeout(updateName, 500);
     }
 
+
+
 </script>
 
 {#if object === undefined}
@@ -103,7 +105,7 @@
         </div>
         <div class="w-full h-full">
             {#if object.Type === "MD"}
-                <MarkdownEditorField data={object.Data}></MarkdownEditorField>
+                <MarkdownEditorField bind:data={object.Data} on:update={sendObjectToServer}></MarkdownEditorField>
             {:else if object.Type === "image/png"}
                 <PictureView data={$serverURL+"/object/data/"+object.ID}></PictureView>
             {/if}
