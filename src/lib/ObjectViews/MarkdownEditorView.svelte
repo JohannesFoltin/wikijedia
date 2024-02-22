@@ -12,7 +12,7 @@
     let html = "";
 
     let isEditing = false;
-    
+
     onMount(() => {
         console.log("onMount");
         console.log(data);
@@ -23,6 +23,7 @@
 
     const md = markdownit({
         breaks: true,
+        linkify: true
     });
 
     function updatePreview() {
