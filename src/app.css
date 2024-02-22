@@ -29,10 +29,15 @@
      @apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700;
     }
     ol {
-      @apply space-y-1 list-decimal list-inside dark:text-gray-400;
+      @apply ps-5 space-y-1 list-decimal list-inside dark:text-gray-400;
     }
     ul {
       @apply ps-5 space-y-1 list-disc list-inside dark:text-gray-400;
     }
-    
+    p {
+      @apply my-2;
+    }
+    a {
+      @apply font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline;
+    }
   }
