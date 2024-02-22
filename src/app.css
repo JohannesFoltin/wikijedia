@@ -26,7 +26,13 @@
       @apply font-mono;
     }
     hr {
-      @apply pt-5;
-      @apply pb-5;
+     @apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700;
     }
+    ol {
+      @apply space-y-1 list-decimal list-inside dark:text-gray-400;
+    }
+    ul {
+      @apply ps-5 space-y-1 list-disc list-inside dark:text-gray-400;
+    }
+    
   }
