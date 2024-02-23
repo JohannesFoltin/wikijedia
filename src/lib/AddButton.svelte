@@ -3,20 +3,26 @@
   import { fly } from "svelte/transition";
   import { PlusCircle, FilePlus, FolderPlus } from "lucide-svelte";
   import { serverURL } from "./store";
-    import { createEventDispatcher } from "svelte";
-    import Dialog from "./Dialog.svelte";
+  import { createEventDispatcher } from "svelte";
+  import Dialog from "./Dialog.svelte";
+  import { Upload } from "lucide-svelte";
 
   const depatch = createEventDispatcher();
-  
+
   let dialog = false;
 
   async function addFile() {
-    dialog = true
+    dialog = true;
     console.log("addFile");
     const url = $serverURL + "object";
     let data;
 
-    data = { Name: "New Object",Type:"MD", Data: "# Hello World", FolderID: 1 };
+    data = {
+      Name: "New Object",
+      Type: "MD",
+      Data: "# Hello World",
+      FolderID: 1,
+    };
 
     try {
       const response = await fetch(url, {
@@ -64,6 +70,21 @@
       console.error("An error occurred:", error);
     }
   }
+
+  let fileinput : HTMLInputElement;
+
+  const onFileSelected = (e : Event) => {
+    console.log("file selected");
+    let image = e.target;
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    console.log("reader");
+    reader.onload = (e) => {
+      console.log("loaded");
+      console.log(e.type);
+
+    };
+  };
 </script>
 
 <DropdownMenu.Root>
@@ -90,14 +111,33 @@
     <DropdownMenu.Item
       class="flex h-10 select-none items-center rounded-button rounded-xl hover:bg-gray-200 py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
       on:click={addFolder}
-      >
+    >
       <div class="flex items-center">
         <FolderPlus class="mr-2 size-5 text-foreground-alt" />
         Neuer Ordner
       </div>
     </DropdownMenu.Item>
+    <DropdownMenu.Item
+      class="flex h-10 select-none items-center rounded-button rounded-xl hover:bg-gray-200 py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
+      on:click={() => {fileinput.click();}}
+    >
+      <div class="flex items-center">
+        <Upload class="mr-2 size-5 text-foreground-alt" />
+        Neues File
+      </div>
+      <input
+        style="display:none"
+        type="file"
+        accept=".jpeg, .png"
+        on:change={(e) => {
+          console.log("tr5ewst");
+          onFileSelected(e);
+        }}
+        bind:this={fileinput}
+      />
+    </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 {#if dialog}
-    <Dialog></Dialog>
+  <Dialog></Dialog>
 {/if}

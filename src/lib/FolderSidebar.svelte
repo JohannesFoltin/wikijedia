@@ -2,6 +2,7 @@
     import FileSidebar from "./FileSidebar.svelte";
     import { ChevronDown, ChevronRight } from "lucide-svelte";
     import type { BackendFolder } from "./types";
+    import { Folder } from 'lucide-svelte';
 
     export let folder : BackendFolder;
     export let indent = 0;
@@ -28,6 +29,7 @@
             <ChevronDown class="size-4 mx-auto" />
         </div>
     {/if}
+    <!-- <Folder class="size-4 mx-1" /> -->
     <div class="">
         {folder.Name}
     </div>
