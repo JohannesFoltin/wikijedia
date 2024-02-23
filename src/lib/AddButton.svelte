@@ -72,12 +72,14 @@
   }
 
   let fileinput : HTMLInputElement;
+  let files;
+  $: console.log(files);
 
   const onFileSelected = (e : Event) => {
     console.log("file selected");
     let image = e.target;
     let reader = new FileReader();
-    reader.readAsDataURL(image);
+    //reader.readAsDataURL(image);
     console.log("reader");
     reader.onload = (e) => {
       console.log("loaded");
@@ -129,10 +131,8 @@
         style="display:none"
         type="file"
         accept=".jpeg, .png"
-        on:change={(e) => {
-          console.log("tr5ewst");
-          onFileSelected(e);
-        }}
+        id="avatar"
+        bind:files
         bind:this={fileinput}
       />
     </DropdownMenu.Item>
