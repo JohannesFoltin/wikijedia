@@ -11,14 +11,14 @@
 
   let dialog = false;
 
-  async function addFile() {
-    dialog = true;
-    console.log("addFile");
+  async function addFile(event) {
+    console.log(event.detail);
+    dialog = false;
     const url = $serverURL + "object";
     let data;
 
     data = {
-      Name: "New Object",
+      Name: event.detail,
       Type: "MD",
       Data: "# Hello World",
       FolderID: 1,
@@ -116,7 +116,9 @@
   >
     <DropdownMenu.Item
       class="flex h-10 select-none items-center rounded-button rounded-xl py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted hover:bg-gray-200"
-      on:click={addFile}
+      on:click={()=>{
+        dialog = true;
+      }}
     >
       <div class="flex items-center">
         <FilePlus class="mr-2 size-5 text-foreground-alt" />
@@ -145,9 +147,7 @@
     </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
-{#if dialog}
-  <Dialog></Dialog>
-{/if}
+<Dialog dialogOpen={dialog} message={"Name"} title={"Gebe der Datei einenen Namen"} on:save={addFile} on:error={()=>{dialog = false}}></Dialog>
 <input
   class="hidden"
   type="file"
