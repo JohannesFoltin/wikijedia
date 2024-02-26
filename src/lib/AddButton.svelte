@@ -9,11 +9,12 @@
 
   const depatch = createEventDispatcher();
 
-  let dialog = false;
+  let fileDialog = false;
+  let folderDialog = false;
 
   async function addFile(event) {
     console.log(event.detail);
-    dialog = false;
+    fileDialog = false;
     const url = $serverURL + "object";
     let data;
 
@@ -44,11 +45,13 @@
     }
   }
 
-  async function addFolder() {
+  async function addFolder(event) {
     console.log("addFolder");
+
+    folderDialog = false;
     const url = $serverURL + "folder";
 
-    const data = { Name: "Hallo Welt", ParentID: 1 };
+    const data = { Name: event.detail, ParentID: 1 };
 
     console.log(JSON.stringify(data));
 
@@ -117,7 +120,7 @@
     <DropdownMenu.Item
       class="flex h-10 select-none items-center rounded-button rounded-xl py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted hover:bg-gray-200"
       on:click={()=>{
-        dialog = true;
+        fileDialog = true;
       }}
     >
       <div class="flex items-center">
@@ -127,7 +130,9 @@
     </DropdownMenu.Item>
     <DropdownMenu.Item
       class="flex h-10 select-none items-center rounded-button rounded-xl hover:bg-gray-200 py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
-      on:click={addFolder}
+      on:click={()=>{
+        folderDialog = true;
+      }}
     >
       <div class="flex items-center">
         <FolderPlus class="mr-2 size-5 text-foreground-alt" />
@@ -147,7 +152,9 @@
     </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
-<Dialog dialogOpen={dialog} message={"Name"} title={"Gebe der Datei einenen Namen"} on:save={addFile} on:error={()=>{dialog = false}}></Dialog>
+<Dialog dialogOpen={fileDialog} message={"Name"} title={"Gebe der Datei einen Namen"} on:save={addFile} on:error={()=>{fileDialog = false}}></Dialog>
+<Dialog dialogOpen={folderDialog} message={"Name"} title={"Gebe dem Ordner einen Namen"} on:save={addFolder} on:error={()=>{folderDialog = false}}></Dialog>
+
 <input
   class="hidden"
   type="file"
