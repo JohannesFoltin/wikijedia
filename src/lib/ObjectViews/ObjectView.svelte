@@ -106,7 +106,7 @@
         <div class="w-full h-full">
             {#if object.Type === "MD"}
                 <MarkdownEditorField bind:data={object.Data} on:update={sendObjectToServer}></MarkdownEditorField>
-            {:else if object.Type === "image/png"}
+            {:else if object.Type === "image/png" || object.Type === "image/jpeg"}
                 <PictureView data={$serverURL+"/object/data/"+object.ID}></PictureView>
             {:else if object.Type === "application/pdf"}
                 <iframe src={$serverURL+"/object/data/"+object.ID} class="w-full h-full" title={object.Name}></iframe>

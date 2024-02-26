@@ -73,12 +73,30 @@
 
   let fileinput: HTMLInputElement;
 
+  async function uploadFile(file :File) {
+    const url = 'http://localhost:8080/upload';
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    depatch("update");
+  }
+
   const onFileSelected = (e: Event) => {
     console.log(e);
     let file = (e.target as HTMLInputElement).files[0];
             let reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = e => {
+                uploadFile(file);
                  //avatar = e.target.result
             };
   };
