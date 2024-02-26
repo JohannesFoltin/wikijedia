@@ -71,21 +71,16 @@
     }
   }
 
-  let fileinput : HTMLInputElement;
-  let files;
-  $: console.log(files);
+  let fileinput: HTMLInputElement;
 
-  const onFileSelected = (e : Event) => {
-    console.log("file selected");
-    let image = e.target;
-    let reader = new FileReader();
-    //reader.readAsDataURL(image);
-    console.log("reader");
-    reader.onload = (e) => {
-      console.log("loaded");
-      console.log(e.type);
-
-    };
+  const onFileSelected = (e: Event) => {
+    console.log(e);
+    let file = (e.target as HTMLInputElement).files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                 //avatar = e.target.result
+            };
   };
 </script>
 
@@ -121,23 +116,27 @@
     </DropdownMenu.Item>
     <DropdownMenu.Item
       class="flex h-10 select-none items-center rounded-button rounded-xl hover:bg-gray-200 py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted"
-      on:click={() => {fileinput.click();}}
+      on:click={() => {
+        fileinput.click();
+      }}
     >
       <div class="flex items-center">
         <Upload class="mr-2 size-5 text-foreground-alt" />
         Neues File
       </div>
-      <input
-        style="display:none"
-        type="file"
-        accept=".jpeg, .png"
-        id="avatar"
-        bind:files
-        bind:this={fileinput}
-      />
     </DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 {#if dialog}
   <Dialog></Dialog>
 {/if}
+<input
+  class="hidden"
+  type="file"
+  accept="image/png, image/jpeg, application/pdf"
+  name="file"
+  id="file"
+  on:change={(e)=>onFileSelected(e)}
+    bind:this={fileinput}
+  required
+/>
