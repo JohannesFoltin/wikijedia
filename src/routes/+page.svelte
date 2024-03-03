@@ -78,7 +78,7 @@
             {#if sidebarVisible}
                 <div class="flex-none w-56">
                     <div class="w-full h-max">
-                        {#if rootFolder !== null}
+                        {#if rootFolder !== undefined && rootFolder !== null}
                             {#each rootFolder.Children as folder}
                                 <div>
                                     <FolderSidebar folder={folder} indent={4} />

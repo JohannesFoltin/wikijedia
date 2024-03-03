@@ -20,7 +20,7 @@
             isSelected = false;
             return;
         }
-        if (value.ID == data.ID) {
+        if (value.Name == data.Name) {
             isSelected = true;
         } else {
             isSelected = false;

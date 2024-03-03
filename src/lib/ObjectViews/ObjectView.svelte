@@ -13,12 +13,15 @@
 
     let nameFieldIsLoading = false;
     let safeTimeoutForName;
+    let nameBuffer = "";
 
     onMount(async () => {
-        await getObject(currentObject.get().ID);
+        await getObject(currentObject.get().Name);
+        nameBuffer = currentObject.get().Name;
         currentObject.subscribe(async (value) => {
-            if (value !== null && value.ID !== object.ID) {
-                await getObject(value.ID);
+            if (value !== null && value.Name !== object.Name) {
+                nameBuffer = value.Name;
+                await getObject(value.Name);
             }
         });
     });
@@ -41,7 +44,7 @@
 
     const sendObjectToServer = async () => {
         try {
-            const response = await fetch($serverURL + "object/" + object.ID, {
+            const response = await fetch($serverURL + "object/" + object.Name, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,11 +58,11 @@
     };
 
     const updateName = async () => {
-        let tmp = {Name: object.Name};
+        let tmp = {Name: nameBuffer};
         console.log(tmp);
         try {
             const response = await fetch(
-                $serverURL + "object/" + object.ID + "/name",
+                $serverURL + "object/" + object.Name + "/name",
                 {
                     method: "PUT",
                     headers: {
@@ -70,6 +73,7 @@
             );
             console.log(response);
             dispatch("updateName");
+            object.Name = nameBuffer;
             nameFieldIsLoading = false;
         } catch (error) {
             console.error(error);
@@ -95,7 +99,7 @@
                     id="input"
                     class="w-96 h-12 text-xl border-b-2 border-b-gray-600 border-solid;"
                     on:input={onFileNameInput}
-                    bind:value={object.Name}
+                    bind:value={nameBuffer}
             />
             {#if nameFieldIsLoading}
                 <div class="loading-icon">Loading...</div>
@@ -107,9 +111,9 @@
             {#if object.Type === "MD"}
                 <MarkdownEditorField bind:data={object.Data} on:update={sendObjectToServer}></MarkdownEditorField>
             {:else if object.Type === "image/png" || object.Type === "image/jpeg"}
-                <PictureView data={$serverURL+"/object/data/"+object.ID}></PictureView>
+                <PictureView data={$serverURL+"/object/data/"+object.Name}></PictureView>
             {:else if object.Type === "application/pdf"}
-                <iframe src={$serverURL+"/object/data/"+object.ID} class="w-full h-full p-4" title={object.Name}></iframe>
+                <iframe src={$serverURL+"/object/data/"+object.Name} class="w-full h-full p-4" title={object.Name}></iframe>
             {:else}
                 <p>Not supported</p>
             {/if}
