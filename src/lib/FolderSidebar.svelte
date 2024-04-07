@@ -3,7 +3,7 @@
     import { ChevronDown, ChevronRight } from "lucide-svelte";
     import type { BackendFolder } from "./types";
     import ActionIconsElements from "./ActionIconsElements.svelte";
-    import { serverURL, updateStructure } from "./store";
+    import { serverURL, showMoveDialog, updateStructure } from "./store";
 
     export let folder : BackendFolder;
     export let indent = 0;
@@ -30,7 +30,7 @@
     };
 
     const moveObjekt = async () =>{
-
+        showMoveDialog.set()
     }
 </script>
 

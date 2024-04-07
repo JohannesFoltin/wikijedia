@@ -41,3 +41,16 @@ function updateNotifiyer() {
 }
 
 export const updateStructure  = updateNotifiyer();
+
+function showMoveDialog2() {
+    const writableObject = writable(false);
+    const {set, subscribe} = writableObject;
+    return {
+        subscribe,
+        get: () => get(writableObject),
+        set: () => set(true),
+        reset: () => set(false)
+    };
+}
+
+export const showMoveDialog  = showMoveDialog2();
