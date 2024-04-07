@@ -1,4 +1,4 @@
-# Projektname
+# Wikijedia
 
 Für Webprogrammierung eine kleine Wikisoftware.
 Von Johannes Foltin
