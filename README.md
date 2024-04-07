@@ -14,7 +14,7 @@ Stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind, bevor Sie 
 1. Klone das Repository:
 
     ```shell
-    git clone https://github.com/dein-repository.git
+    git clone https://github.com/JohannesFoltin/wikijedia.git
     ```
 
 2. Baue das Programm mit Docker Compose:
@@ -30,6 +30,8 @@ Stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind, bevor Sie 
     ```
 
     Dadurch werden die erforderlichen Container gestartet und das Programm wird im Hintergrund ausgeführt.
+
+Es ist erreichbar unter Port 80. (http://localhost:80)
 
 ## Dev
 
