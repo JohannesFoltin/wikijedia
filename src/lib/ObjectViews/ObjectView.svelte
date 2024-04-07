@@ -16,12 +16,12 @@
     let nameBuffer = "";
 
     onMount(async () => {
-        await getObject(currentObject.get().Name);
+        await getObject(currentObject.get().ID);
         nameBuffer = currentObject.get().Name;
         currentObject.subscribe(async (value) => {
-            if (value !== null && value.Name !== object.Name) {
+            if (value !== null && value.ID !== object.ID) {
                 nameBuffer = value.Name;
-                await getObject(value.Name);
+                await getObject(value.ID);
             }
         });
     });
@@ -42,7 +42,7 @@
 
     const sendObjectToServer = async () => {
         try {
-            const response = await fetch($serverURL + "object/" + object.Name, {
+            const response = await fetch($serverURL + "object/" + object.ID, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,7 +59,7 @@
         let tmp = { Name: nameBuffer };
         console.log(tmp);
         const response = await fetch(
-            $serverURL + "object/" + object.Name + "/name",
+            $serverURL + "object/" + object.ID + "/name",
             {
                 method: "PUT",
                 headers: {
@@ -110,11 +110,11 @@
                     on:update={sendObjectToServer}
                 ></MarkdownEditorField>
             {:else if object.Type === "image/png" || object.Type === "image/jpeg"}
-                <PictureView data={$serverURL + "/object/data/" + object.Name}
+                <PictureView data={$serverURL + "/object/data/" + object.ID}
                 ></PictureView>
             {:else if object.Type === "application/pdf"}
                 <iframe
-                    src={$serverURL + "/object/data/" + object.Name}
+                    src={$serverURL + "/object/data/" + object.ID}
                     class="w-full h-full p-4"
                     title={object.Name}
                 ></iframe>

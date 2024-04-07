@@ -9,6 +9,7 @@
  *
  */
 interface  BackendObject {
+    ID: number;
     Name: string;
     Type: string;
     Data: string;
