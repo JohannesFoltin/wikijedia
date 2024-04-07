@@ -1,12 +1,17 @@
 <script lang="ts">
-    import { currentObject, serverURL, showMoveDialog, updateStructure } from "../lib/store";
+    import {
+        currentObject,
+        serverURL,
+        showMoveDialog,
+        updateStructure,
+    } from "../lib/store";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
     import MarkdownEditor from "../lib/ObjectViews/ObjectView.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
     import AddButton from "../lib/AddButton.svelte";
-    import type { BackendFolder} from "../lib/types";
+    import type { BackendFolder } from "../lib/types";
     import MoveDialog from "../lib/MoveDialog/MoveDialog.svelte";
 
     let unlocked: boolean = true;
@@ -56,7 +61,6 @@
         const rootFolder = folderMap[1];
         return rootFolder;
     }
-
 </script>
 
 <div class="flex h-screen w-screen">
@@ -118,12 +122,44 @@
 </div>
 <MoveDialog
     dialogOpen={$showMoveDialog != -1}
-    rootFolder={rootFolder}
-    on:save={({detail}) => {
-        if($showMoveDialog == -2){
-            console.log("file");
-        }else{
-            console.log("folder");
+    {rootFolder}
+    on:save={async ({ detail }) => {
+        if ($showMoveDialog == -2) {
+            let data = {parentFolderID: detail};
+            try {
+                const response = await fetch(
+                    $serverURL + "object/" + $currentObject.ID + "/parent",
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    },
+                );
+                console.log(response);
+                updateStructure.set();
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            let data = {parentFolderID: detail};
+            try {
+                const response = await fetch(
+                    $serverURL + "folder/" + $showMoveDialog + "/parent",
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    },
+                );
+                console.log(response);
+                updateStructure.set();
+            } catch (error) {
+                console.error(error);
+            }
         }
         showMoveDialog.reset();
     }}
