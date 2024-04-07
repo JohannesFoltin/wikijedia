@@ -9,13 +9,14 @@
     export let indent = 0;
 
     let open = false;
+   
+    let newIdent = indent + 24;
+
+    let hover = false;
 
     function toggleOpen() {
         open = !open;
     }
-    let newIdent = indent + 24;
-
-    let hover = false;
 
     const deleteObjekt = async () => {
         try {

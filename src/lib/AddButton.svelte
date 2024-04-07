@@ -11,7 +11,10 @@
 
   let fileDialog = false;
   let folderDialog = false;
+  let fileinput: HTMLInputElement;
 
+
+  // Ein neues File wird erstellt
   async function addFile(event) {
     console.log(event.detail);
     fileDialog = false;
@@ -21,7 +24,7 @@
     data = {
       Name: event.detail,
       Type: "MD",
-      Data: "# Hello World",
+      Data: "# Markdown ist cool!",
       FolderID: 1,
     };
 
@@ -45,6 +48,7 @@
     }
   }
 
+  // Ein neuer Ordner wird erstellt
   async function addFolder(event) {
     console.log("addFolder");
 
@@ -73,9 +77,8 @@
       console.error("An error occurred:", error);
     }
   }
-
-  let fileinput: HTMLInputElement;
-
+  
+ // Ein File wird hochgeladen
   async function uploadFile(file :File) {
     const url = 'http://localhost:8080/upload';
     const formData = new FormData();
@@ -93,6 +96,7 @@
     depatch("update");
   }
 
+  // Wenn ein File ausgewählt wurde wird es automatisch hochgeladen
   const onFileSelected = (e: Event) => {
     console.log(e);
     let file = (e.target as HTMLInputElement).files[0];

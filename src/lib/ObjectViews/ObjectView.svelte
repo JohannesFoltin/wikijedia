@@ -15,6 +15,7 @@
     let safeTimeoutForName;
     let nameBuffer = "";
 
+    // Lädt das Objekt vom Server und sollte sich was ändern, wird das Objekt neu geladen
     onMount(async () => {
         await getObject(currentObject.get().ID);
         nameBuffer = currentObject.get().Name;
@@ -28,6 +29,7 @@
 
     $: console.log(object);
 
+    // Holt das Objekt vom Server
     async function getObject(value) {
         try {
             const url = $serverURL + "object/" + value;
@@ -40,6 +42,7 @@
         }
     }
 
+    // Sendet das Objekt an den Server
     const sendObjectToServer = async () => {
         try {
             const response = await fetch($serverURL + "object/" + object.ID, {
@@ -55,6 +58,7 @@
         }
     };
 
+    // Aktualisiert den Namen des Objekts
     const updateName = async () => {
         let tmp = { Name: nameBuffer };
         console.log(tmp);
@@ -79,6 +83,7 @@
         }
     };
 
+    // Funktion die aufgerufen wird, wenn der Name geändert wird und einen Offset zum speichern des Namens setzt
     function onFileNameInput() {
         nameFieldIsLoading = true;
         clearTimeout(safeTimeoutForName);

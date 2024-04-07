@@ -21,11 +21,13 @@
 
     $:data && updatePreview();
 
+    // Markdown-Parser wird erstellt
     const md = markdownit({
         breaks: true,
         linkify: true
     });
 
+    // Der Markdown-Text wird in HTML umgewandelt
     function updatePreview() {
         html = md.render(data);
     }
@@ -34,7 +36,7 @@
         isEditing = !isEditing;
     }
 
-
+    // Funktion wird aufgerufen, wenn etwas eingefügt wird
     function onPaste(event: ClipboardEvent) {
         console.log("paste Type: " + event.clipboardData.files[0].type);
     }

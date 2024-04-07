@@ -8,20 +8,22 @@
 
     const dispatch = createEventDispatcher();
 
+    let content ="";
+    
     export let dialogOpen = true;
 
+    // Alle wichtigen Informationen für den Dialog
     export let title : string = "";
     export let message :string = "";
     
-    let content ="";
 
-    $:console.log(content);
-
+    // Wird ausgeführt, wenn der Dialog geschlossen wird
     function closeDialog() {
         content = "";
         dispatch("error");
     }
 
+    // Wird ausgeführt, wenn der Dialog gespeichert wird
     function save(){
         dispatch("save", content);
         content = "";

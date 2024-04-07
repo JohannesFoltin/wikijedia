@@ -16,13 +16,15 @@
     export let indent: number = 0;
 
     let hover = false;
+    let style: string;
 
+    // Das Objekt wird ausgewählt
     function setInhalt() {
         currentObject.set(data);
     }
 
     let isSelected = false;
-
+    // Es wird geschaut ob das derzeitige Objekt ausgewählt ist
     currentObject.subscribe((value) => {
         if (value === null) {
             isSelected = false;
@@ -34,7 +36,7 @@
             isSelected = false;
         }
     });
-
+    // Das Objekt wird gelöscht
     const deleteObjekt = async () => {
         try {
             const response = await fetch($serverURL + "object/" + data.ID, {
@@ -47,12 +49,12 @@
         }
     };
 
+    // Der Dialog zum verschieben des Objekts wird geöffnet
     function moveObjekt() {
         showMoveDialog.set(-2);
     }
 
-    let style: string;
-
+    // Es wird geschaut ob das Objekt ausgewählt ist und dementsprechend wird das Styling angepasst
     $: if (isSelected) {
         style = "bg-gray-200 rounded-lg ";
     } else {

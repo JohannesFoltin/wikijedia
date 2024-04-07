@@ -23,12 +23,13 @@
 
     let rootFolder: BackendFolder = null;
 
+    // Die initiale URL des Servers wird gesetzt und die Ordnerstruktur wird geladen
     onMount(async () => {
         serverURL.set("http://localhost:8080/");
         rootFolder = await getFolderstruture();
-        console.log(rootFolder);
     });
 
+    // Wenn die Ordnerstruktur aktualisiert werden soll, wird die Funktion getFolderstruture aufgerufen
     updateStructure.subscribe(async (needResync) => {
         if (needResync) {
             rootFolder = await getFolderstruture();
@@ -40,6 +41,7 @@
         sidebarVisible = !sidebarVisible;
     }
 
+    // Die Ordnerstruktur wird vom Server geladen und in ein Baumstruktur umgewandelt
     async function getFolderstruture() {
         const response = await fetch($serverURL + "structure");
         const tmp: string = await response.json();
@@ -124,6 +126,7 @@
     dialogOpen={$showMoveDialog != -1}
     {rootFolder}
     on:save={async ({ detail }) => {
+        // Wenn die Datei verschoben werden soll, wird die Datei verschoben. Da sie unter dem aktuellen Objekt verschoben werden soll, wird -2 übergeben
         if ($showMoveDialog == -2) {
             let data = {parentFolderID: detail};
             try {
@@ -142,7 +145,9 @@
             } catch (error) {
                 console.error(error);
             }
-        } else {
+        } 
+        // Sonst wird der Ordner verschoben udn die OrdnerID ist der showMoveDialog Wert
+        else {
             let data = {parentFolderID: detail};
             try {
                 const response = await fetch(
