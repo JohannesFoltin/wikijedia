@@ -4,10 +4,13 @@
     import { File } from "lucide-svelte";
     import { FileText } from "lucide-svelte";
     import { Image } from "lucide-svelte";
+    import ActionIconsElements from "./ActionIconsElements.svelte";
 
     export let data: BackendObject;
 
     export let indent: number = 0;
+    
+    let hover = false;
 
     function setInhalt() {
         currentObject.set(data);
@@ -44,10 +47,13 @@
         {data.Name}
     </button>
 {:else}
+<div>
     <button
         style="padding-left: {indent}px"
         class="flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden"
         on:dblclick={setInhalt}
+        on:mouseenter={()=> hover= true}
+        on:mouseleave={()=> hover= false}
     >
         {#if data.Type == "MD"}
             <File class="size-4 mx-1 flex-shrink-0" />
@@ -58,4 +64,9 @@
         {/if}
         {data.Name}
     </button>
+    {#if hover}
+    
+        <ActionIconsElements/>
+    {/if}
+</div>
 {/if}
