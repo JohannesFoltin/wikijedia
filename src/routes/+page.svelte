@@ -1,18 +1,13 @@
 <script lang="ts">
-	import MoveDialog from './../lib/MoveDialog.svelte';
     import { currentObject, serverURL, showMoveDialog, updateStructure } from "../lib/store";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
     import MarkdownEditor from "../lib/ObjectViews/ObjectView.svelte";
     import { PanelLeftClose, PanelLeftOpen } from "lucide-svelte";
-    import { PinInput } from "bits-ui";
-    import { Toggle } from "bits-ui";
-    import { LockKeyhole, UnlockKeyhole } from "lucide-svelte";
     import AddButton from "../lib/AddButton.svelte";
-    import type { BackendFolder } from "../lib/types";
-
-    let value: string[] | undefined = ["5", "1", "3", "7"];
+    import type { BackendFolder} from "../lib/types";
+    import MoveDialog from "../lib/MoveDialog/MoveDialog.svelte";
 
     let unlocked: boolean = true;
 
@@ -123,9 +118,11 @@
     {/if}
 </div>
 <MoveDialog
-    dialogOpen={$showMoveDialog}
+    dialogOpen={$showMoveDialog !== null}
     rootFolder={rootFolder}
-    on:save={(test) => {
+    on:save={({detail}) => {
+       console.log(detail);
+       console.log(typeof $showMoveDialog);
         showMoveDialog.reset();
     }}
     on:error={() => {

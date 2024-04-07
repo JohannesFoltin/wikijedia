@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { currentObject, serverURL, updateStructure } from "./store.js";
+    import { currentObject, serverURL, showMoveDialog, updateStructure } from "./store.js";
     import type { BackendObject } from "./types";
     import { File } from "lucide-svelte";
     import { FileText } from "lucide-svelte";
@@ -43,7 +43,7 @@
     };
 
     function moveObjekt() {
-        console.log("move");
+        showMoveDialog.set(data);
     }
 
     let style:string;

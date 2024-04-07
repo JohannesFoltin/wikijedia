@@ -3,14 +3,15 @@
     //import { flyAndScale } from "bits-ui/utils";
     import { fly } from "svelte/transition";
     import { fade } from "svelte/transition";
-    import type { BackendFolder } from "../lib/types";
+    import type { BackendFolder } from "../types";
     import { createEventDispatcher } from "svelte";
+    import FolderMoveDialogElement from "./FolderMoveDialogElement.svelte";
 
     const dispatch = createEventDispatcher();
 
     export let dialogOpen = true;
 
-    export let rootFolder : BackendFolder;    
+    export let rootFolder: BackendFolder;
 
 
     function closeDialog() {
@@ -18,6 +19,7 @@
     }
 
     function save(id:number){
+      console.log(id);
         dispatch("save", id);
     }
 
@@ -37,16 +39,22 @@
         <Dialog.Title
           class="flex w-full items-center justify-center text-lg font-semibold tracking-tight"
           >
-          "In anderen Ordner verschieben"
+            <div class="text-2xl font-bold">
+            In anderen Ordner verschieben
+          </div>
           </Dialog.Title
         >
-        <Separator.Root class="-mx-5 mb-6 mt-5 block h-px bg-muted" />
         <div class="flex flex-col items-start gap-1 pb-11 pt-7">
-          <Label.Root for="apiKey" class="text-sm font-medium">"Doppelklick den passenden Überordner"</Label.Root
-          >
+          <Label.Root for="apiKey" class="text-lg font-medium">
+            <div >
+              Doppelklick auf den passenden Überordner
+            </div>
+            </Label.Root
+            >
+        <div class="my-2"/>
           <div class="relative w-full">
-            <div>
-              hello
+            <div class="">
+              <FolderMoveDialogElement folder={rootFolder} indent={0} on:selected={({detail}) => save(detail)} />
             </div>
           </div>
         </div>          
