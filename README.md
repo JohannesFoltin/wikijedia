@@ -1,6 +1,7 @@
 # Projektname
 
-Kurze Beschreibung des Projekts.
+Für Webprogrammierung eine kleine Wikisoftware.
+Von Johannes Foltin
 
 ## Voraussetzungen
 
