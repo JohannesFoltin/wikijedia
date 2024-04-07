@@ -53,9 +53,13 @@
             bind:value={content}
               id="apiKey"
               class="inline-flex h-input w-full items-center rounded-card-sm border border-border-input bg-background px-4 text-sm placeholder:text-foreground-alt/50 hover:border-dark-40 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
-              placeholder="Name"
               type="text"
               autocomplete="off"
+              on:keydown={(e) => {
+                if (e.key === "Enter") {
+                  save();
+                }
+              }}
             />
           </div>
         </div>

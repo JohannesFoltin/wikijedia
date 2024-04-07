@@ -2,6 +2,8 @@
     import FileSidebar from "./FileSidebar.svelte";
     import { ChevronDown, ChevronRight } from "lucide-svelte";
     import type { BackendFolder } from "./types";
+    import ActionIconsElements from "./ActionIconsElements.svelte";
+    import { serverURL, updateStructure } from "./store";
 
     export let folder : BackendFolder;
     export let indent = 0;
@@ -12,26 +14,57 @@
         open = !open;
     }
     let newIdent = indent + 24;
+
+    let hover = false;
+
+    const deleteObjekt = async () => {
+        try {
+            const response = await fetch($serverURL + "folder/" + folder.ID, {
+                method: "DELETE",
+            });
+            console.log(response);
+            updateStructure.set();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const moveObjekt = async () =>{
+
+    }
 </script>
 
 <button
-    style="padding-left: {indent}px"
-    class="flex items-center hover:bg-gray-200 hover:rounded-lg w-full h-full"
-    on:click={toggleOpen}
->
-    {#if !open}
-        <div class="flex items-center">
-            <ChevronRight class="size-4 mx-auto" />
+class="justify-between h-full w-full relative hover:bg-gray-200 hover:rounded-lg "
+    on:mouseenter={()=>(hover = true)}
+    on:mouseleave={()=>(hover = false)}>
+    <button
+        style="padding-left: {indent}px"
+        class="flex items-center w-full h-full"
+        on:click={toggleOpen}
+    >
+        {#if !open}
+            <div class="flex items-center">
+                <ChevronRight class="size-4 mx-auto" />
+            </div>
+        {:else}
+            <div class="flex items-center">
+                <ChevronDown class="size-4 mx-auto" />
+            </div>
+        {/if}
+        <!-- <Folder class="size-4 mx-1" /> -->
+        <div class="">
+            {folder.Name}
         </div>
-    {:else}
-        <div class="flex items-center">
-            <ChevronDown class="size-4 mx-auto" />
+    </button>
+    {#if hover}
+        <div class="z-10 absolute right-0 top-0 h-full">
+            <ActionIconsElements
+                on:delelte={deleteObjekt}
+                on:move={moveObjekt}
+            />
         </div>
     {/if}
-    <!-- <Folder class="size-4 mx-1" /> -->
-    <div class="">
-        {folder.Name}
-    </div>
 </button>
 
 {#if open}

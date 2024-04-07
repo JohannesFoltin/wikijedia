@@ -46,26 +46,25 @@
         console.log("move");
     }
 
-    let style =
-        "flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden";
+    let style:string;
 
     $: if (isSelected) {
         style =
-            "flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden";
+            "bg-gray-200 rounded-lg ";
     } else {
         style =
-            "flex hover:bg-gray-200 hover:rounded-lg w-full h-full truncate items-center overflow-hidden";
+            "hover:bg-gray-200 hover:rounded-lg";
     }
 </script>
 
 <button
-    class="justify-between h-full w-full relative"
+    class="justify-between h-full w-full relative {style}"
     on:mouseenter={() => (hover = true)}
     on:mouseleave={() => (hover = false)}
 >
     <button
         style="padding-left: {indent}px"
-        class="{style}"
+        class="flex w-full h-full truncate items-center overflow-hidden"
         on:dblclick={setInhalt}
     >
         {#if data.Type == "MD"}
