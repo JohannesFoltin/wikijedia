@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { currentObject } from "./store.js";
+    import { currentObject, serverURL, updateStructure } from "./store.js";
     import type { BackendObject } from "./types";
     import { File } from "lucide-svelte";
     import { FileText } from "lucide-svelte";
@@ -9,7 +9,7 @@
     export let data: BackendObject;
 
     export let indent: number = 0;
-    
+
     let hover = false;
 
     function setInhalt() {
@@ -29,31 +29,44 @@
             isSelected = false;
         }
     });
+
+    const deleteObjekt = async () => {
+        try {
+            const response = await fetch($serverURL + "object/" + data.ID, {
+                method: "DELETE",
+            });
+            console.log(response);
+            updateStructure.set();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    function moveObjekt() {
+        console.log("move");
+    }
+
+    let style =
+        "flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden";
+
+    $: if (isSelected) {
+        style =
+            "flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden";
+    } else {
+        style =
+            "flex hover:bg-gray-200 hover:rounded-lg w-full h-full truncate items-center overflow-hidden";
+    }
 </script>
 
-{#if !isSelected}
+<button
+    class="justify-between h-full w-full relative"
+    on:mouseenter={() => (hover = true)}
+    on:mouseleave={() => (hover = false)}
+>
     <button
         style="padding-left: {indent}px"
-        class="flex hover:bg-gray-200 hover:rounded-lg w-full h-full truncate items-center overflow-hidden"
+        class="{style}"
         on:dblclick={setInhalt}
-    >
-        {#if data.Type == "MD"}
-            <File class="size-4 mx-1 flex-shrink-0" />
-        {:else if data.Type == "application/pdf"}
-            <FileText class="size-4 mx-1 flex-shrink-0" />
-        {:else}
-            <Image class="size-4 mx-1 flex-shrink-0" />
-        {/if}
-        {data.Name}
-    </button>
-{:else}
-<div>
-    <button
-        style="padding-left: {indent}px"
-        class="flex bg-gray-200 rounded-lg w-full h-full truncate items-center overflow-hidden"
-        on:dblclick={setInhalt}
-        on:mouseenter={()=> hover= true}
-        on:mouseleave={()=> hover= false}
     >
         {#if data.Type == "MD"}
             <File class="size-4 mx-1 flex-shrink-0" />
@@ -65,8 +78,11 @@
         {data.Name}
     </button>
     {#if hover}
-    
-        <ActionIconsElements/>
+        <div class="z-10 absolute right-0 top-0 h-full">
+            <ActionIconsElements
+                on:delelte={deleteObjekt}
+                on:move={moveObjekt}
+            />
+        </div>
     {/if}
-</div>
-{/if}
+</button>

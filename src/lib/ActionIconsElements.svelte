@@ -6,11 +6,12 @@
     const dispatch = createEventDispatcher();
 </script>
 
-<div class="flex items-center justify-end gap-1 z-10">
-    <button on:click={() => dispatch("delelte")}>
-        <Trash2 />
+<div class="flex items-center justify-end gap-1 z-10 h-full">
+    <button  on:click={() => dispatch("delelte")}>
+        <Trash2 class="size-5" />
     </button>
     <button on:click={() => dispatch("move")}>
-        <ArrowUpDown />
+        <ArrowUpDown class="size-5"/>
     </button>
+    <div class="w-2"/>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { currentObject, serverURL } from "../lib/store";
+    import { currentObject, serverURL, updateStructure } from "../lib/store";
     import FolderSidebar from "../lib/FolderSidebar.svelte";
     import FileSidebar from "../lib/FileSidebar.svelte";
     import { onMount } from "svelte";
@@ -26,6 +26,13 @@
         serverURL.set("http://localhost:8080/");
         rootFolder = await getFolderstruture();
         console.log(rootFolder)
+    });
+
+    updateStructure.subscribe(async (locked) => {
+        if(locked){
+            rootFolder = await getFolderstruture();
+            updateStructure.reset();
+        }
     });
 
     function toggleSidebar() {
