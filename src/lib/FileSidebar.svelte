@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { currentObject, serverURL, showMoveDialog, updateStructure } from "./store.js";
+    import {
+        currentObject,
+        serverURL,
+        showMoveDialog,
+        updateStructure,
+    } from "./store.js";
     import type { BackendObject } from "./types";
     import { File } from "lucide-svelte";
     import { FileText } from "lucide-svelte";
@@ -43,17 +48,15 @@
     };
 
     function moveObjekt() {
-        showMoveDialog.set(data);
+        showMoveDialog.set(-2);
     }
 
-    let style:string;
+    let style: string;
 
     $: if (isSelected) {
-        style =
-            "bg-gray-200 rounded-lg ";
+        style = "bg-gray-200 rounded-lg ";
     } else {
-        style =
-            "hover:bg-gray-200 hover:rounded-lg";
+        style = "hover:bg-gray-200 hover:rounded-lg";
     }
 </script>
 
@@ -76,7 +79,7 @@
         {/if}
         {data.Name}
     </button>
-    {#if hover}
+    {#if hover && isSelected}
         <div class="z-10 absolute right-0 top-0 h-full">
             <ActionIconsElements
                 on:delelte={deleteObjekt}

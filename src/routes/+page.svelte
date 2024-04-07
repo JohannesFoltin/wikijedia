@@ -54,7 +54,6 @@
             }
         }
         const rootFolder = folderMap[1];
-        console.log(rootFolder);
         return rootFolder;
     }
 
@@ -118,11 +117,14 @@
     {/if}
 </div>
 <MoveDialog
-    dialogOpen={$showMoveDialog !== null}
+    dialogOpen={$showMoveDialog != -1}
     rootFolder={rootFolder}
     on:save={({detail}) => {
-       console.log(detail);
-       console.log(typeof $showMoveDialog);
+        if($showMoveDialog == -2){
+            console.log("file");
+        }else{
+            console.log("folder");
+        }
         showMoveDialog.reset();
     }}
     on:error={() => {

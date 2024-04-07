@@ -1,5 +1,5 @@
 import { writable, get } from "svelte/store";
-import type { BackendFolder, BackendObject } from "./types";
+import type { BackendObject } from "./types";
 
 function currentObjectMethod() {
     const object: BackendObject | null = null;
@@ -43,14 +43,13 @@ function updateNotifiyer() {
 export const updateStructure  = updateNotifiyer();
 
 function showMoveDialog2() {
-    const object: BackendObject | BackendFolder | null = null;
-    const writableObject = writable(object);
+    const writableObject = writable(-1);
     const {set, subscribe} = writableObject;
     return {
         subscribe,
         get: () => get(writableObject),
-        set: (object) => set(object),
-        reset: () => set(null)
+        set: (id:number) => set(id),
+        reset: () => set(-1)
     };
 }
 

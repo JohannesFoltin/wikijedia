@@ -30,7 +30,7 @@
     };
 
     const moveObjekt = async () =>{
-        showMoveDialog.set(folder)
+        showMoveDialog.set(folder.ID)
     }
 </script>
 
